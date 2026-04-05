@@ -46,9 +46,9 @@
     .hero-geo{padding:18px;border-radius:20px;background:linear-gradient(180deg,#fff,#eef5f0);border:1px solid #d8e5dd}
     .arrowWrap{display:flex;justify-content:center;align-items:center;padding:10px 0 8px}
     .arrow{
-      width:0;height:0;border-left:24px solid transparent;border-right:24px solid transparent;
-      border-bottom:72px solid var(--green);transform-origin:50% 80%;transition:transform .3s ease;
-      filter:drop-shadow(0 4px 8px rgba(0,0,0,.15));
+      width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;
+      border-bottom:48px solid var(--green);transform-origin:50% 78%;transition:transform .12s linear;
+      filter:drop-shadow(0 3px 6px rgba(0,0,0,.14));
     }
     .distance{font-size:2rem;font-weight:bold;text-align:center}
     .team-list{display:grid;gap:10px}
@@ -198,6 +198,8 @@
   let currentTeamPayload = null;
   let watchTimer = null;
   let compassHeading = null;
+  let smoothedHeading = null;
+  let geoWatchId = null;
   let lastPosition = null;
 
   const statusCard = document.getElementById('statusCard');
@@ -366,6 +368,20 @@
     }
   }
 
+  function normalizeAngle(deg){
+    return ((deg % 360) + 360) % 360;
+  }
+
+  function shortestAngleDelta(from, to){
+    return ((to - from + 540) % 360) - 180;
+  }
+
+  function smoothAngle(current, target, factor = 0.28){
+    if(current === null || Number.isNaN(current)) return normalizeAngle(target);
+    const delta = shortestAngleDelta(current, target);
+    return normalizeAngle(current + delta * factor);
+  }
+
   function updateGeoUI(clue){
     if(!lastPosition){
       distanceValue.textContent = '— m';
@@ -376,8 +392,9 @@
     distanceValue.textContent = dist + ' m';
     const bearing = bearingDegrees(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng);
     const heading = typeof compassHeading === 'number' ? compassHeading : 0;
-    const relative = bearing - heading;
-    arrow.style.transform = `rotate(${relative}deg)`;
+    const targetRelative = normalizeAngle(bearing - heading);
+    smoothedHeading = smoothAngle(smoothedHeading, targetRelative, dist < 20 ? 0.18 : 0.32);
+    arrow.style.transform = `rotate(${smoothedHeading}deg)`;
   }
 
   function distanceMeters(lat1, lon1, lat2, lon2){
@@ -425,13 +442,61 @@
     }
   }
 
-  function startGeoWatch(){
-    if(!navigator.geolocation) return alert('Geolocalizzazione non supportata dal dispositivo.');
-    navigator.geolocation.watchPosition(async pos => {
-      lastPosition = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-      if(typeof pos.coords.heading === 'number' && !Number.isNaN(pos.coords.heading)){
-        compassHeading = pos.coords.heading;
+  async function enableCompassIfNeeded(){
+    if(!window.DeviceOrientationEvent) return;
+
+    if(typeof DeviceOrientationEvent.requestPermission === 'function'){
+      try{
+        const response = await DeviceOrientationEvent.requestPermission();
+        if(response !== 'granted'){
+          alert('Permesso bussola non concesso. La freccia userà solo il GPS e sarà meno precisa.');
+          return;
+        }
+      }catch(err){
+        alert('Permesso bussola non disponibile: ' + err.message);
+        return;
       }
+    }
+
+    window.addEventListener('deviceorientationabsolute', evt => {
+      if(typeof evt.alpha === 'number'){
+        compassHeading = normalizeAngle(360 - evt.alpha);
+      }
+    }, true);
+
+    window.addEventListener('deviceorientation', evt => {
+      if(typeof evt.webkitCompassHeading === 'number'){
+        compassHeading = normalizeAngle(evt.webkitCompassHeading);
+      } else if(typeof evt.alpha === 'number') {
+        compassHeading = normalizeAngle(360 - evt.alpha);
+      }
+    }, true);
+  }
+
+  async function startGeoWatch(){
+    if(!navigator.geolocation) return alert('Geolocalizzazione non supportata dal dispositivo.');
+
+    await enableCompassIfNeeded();
+
+    if(geoWatchId !== null){
+      navigator.geolocation.clearWatch(geoWatchId);
+    }
+
+    geoWatchId = navigator.geolocation.watchPosition(async pos => {
+      const incoming = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      if(!lastPosition){
+        lastPosition = incoming;
+      } else {
+        lastPosition = {
+          lat: lastPosition.lat * 0.65 + incoming.lat * 0.35,
+          lng: lastPosition.lng * 0.65 + incoming.lng * 0.35
+        };
+      }
+
+      if(typeof pos.coords.heading === 'number' && !Number.isNaN(pos.coords.heading)){
+        compassHeading = normalizeAngle(pos.coords.heading);
+      }
+
       if(currentTeamPayload && currentTeamPayload.profile && currentTeamPayload.profile.mode === 'extraurbano'){
         const clue = currentTeamPayload.profile.clues[currentTeamPayload.team.clueIndex];
         if(clue){
@@ -446,22 +511,9 @@
       alert('Geolocalizzazione non disponibile: ' + err.message);
     }, {
       enableHighAccuracy:true,
-      maximumAge:1000,
-      timeout:8000
+      maximumAge:0,
+      timeout:5000
     });
-
-    if(window.DeviceOrientationEvent){
-      window.addEventListener('deviceorientationabsolute', evt => {
-        if(typeof evt.alpha === 'number') compassHeading = evt.alpha;
-      }, true);
-      window.addEventListener('deviceorientation', evt => {
-        if(typeof evt.webkitCompassHeading === 'number'){
-          compassHeading = evt.webkitCompassHeading;
-        } else if(typeof evt.alpha === 'number') {
-          compassHeading = evt.alpha;
-        }
-      }, true);
-    }
   }
 
   function renderAdminSummary(state){
