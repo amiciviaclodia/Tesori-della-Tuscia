@@ -46,9 +46,9 @@
     .hero-geo{padding:18px;border-radius:20px;background:linear-gradient(180deg,#fff,#eef5f0);border:1px solid #d8e5dd}
     .arrowWrap{display:flex;justify-content:center;align-items:center;padding:10px 0 8px}
     .arrow{
-      width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;
-      border-bottom:48px solid var(--green);transform-origin:50% 78%;transition:transform .12s linear;
-      filter:drop-shadow(0 3px 6px rgba(0,0,0,.14));
+      width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;
+      border-bottom:30px solid var(--green);transform-origin:50% 76%;transition:transform .06s linear;
+      filter:drop-shadow(0 2px 4px rgba(0,0,0,.12));
     }
     .distance{font-size:2rem;font-weight:bold;text-align:center}
     .team-list{display:grid;gap:10px}
@@ -201,6 +201,8 @@
   let smoothedHeading = null;
   let geoWatchId = null;
   let lastPosition = null;
+  let compassStarted = false;
+  let lastGeoCheckAt = 0;
 
   const statusCard = document.getElementById('statusCard');
   const playerView = document.getElementById('playerView');
@@ -382,18 +384,38 @@
     return normalizeAngle(current + delta * factor);
   }
 
+  function getScreenAngle(){
+    if(window.screen?.orientation?.angle != null) return window.screen.orientation.angle;
+    if(typeof window.orientation === 'number') return window.orientation;
+    return 0;
+  }
+
+  function extractCompassHeading(evt){
+    if(typeof evt.webkitCompassHeading === 'number' && !Number.isNaN(evt.webkitCompassHeading)){
+      return normalizeAngle(evt.webkitCompassHeading);
+    }
+    if(typeof evt.alpha === 'number' && !Number.isNaN(evt.alpha)){
+      return normalizeAngle(360 - evt.alpha + getScreenAngle());
+    }
+    return null;
+  }
+
   function updateGeoUI(clue){
     if(!lastPosition){
       distanceValue.textContent = '— m';
       arrow.style.transform = 'rotate(0deg)';
       return;
     }
+
     const dist = Math.round(distanceMeters(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng));
     distanceValue.textContent = dist + ' m';
+
     const bearing = bearingDegrees(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng);
     const heading = typeof compassHeading === 'number' ? compassHeading : 0;
     const targetRelative = normalizeAngle(bearing - heading);
-    smoothedHeading = smoothAngle(smoothedHeading, targetRelative, dist < 20 ? 0.18 : 0.32);
+
+    const factor = dist <= 12 ? 0.22 : dist <= 25 ? 0.42 : 0.62;
+    smoothedHeading = smoothAngle(smoothedHeading, targetRelative, factor);
     arrow.style.transform = `rotate(${smoothedHeading}deg)`;
   }
 
@@ -443,7 +465,8 @@
   }
 
   async function enableCompassIfNeeded(){
-    if(!window.DeviceOrientationEvent) return;
+    if(!window.DeviceOrientationEvent || compassStarted) return;
+    compassStarted = true;
 
     if(typeof DeviceOrientationEvent.requestPermission === 'function'){
       try{
@@ -458,19 +481,22 @@
       }
     }
 
-    window.addEventListener('deviceorientationabsolute', evt => {
-      if(typeof evt.alpha === 'number'){
-        compassHeading = normalizeAngle(360 - evt.alpha);
-      }
-    }, true);
+    const handleOrientation = evt => {
+      const rawHeading = extractCompassHeading(evt);
+      if(rawHeading === null) return;
 
-    window.addEventListener('deviceorientation', evt => {
-      if(typeof evt.webkitCompassHeading === 'number'){
-        compassHeading = normalizeAngle(evt.webkitCompassHeading);
-      } else if(typeof evt.alpha === 'number') {
-        compassHeading = normalizeAngle(360 - evt.alpha);
+      // filtro leggero per mantenere la freccia reattiva ma non nervosa
+      const factor = 0.72;
+      compassHeading = smoothAngle(compassHeading, rawHeading, factor);
+
+      if(currentTeamPayload?.profile?.mode === 'extraurbano'){
+        const clue = currentTeamPayload.profile.clues[currentTeamPayload.team.clueIndex];
+        if(clue) updateGeoUI(clue);
       }
-    }, true);
+    };
+
+    window.addEventListener('deviceorientationabsolute', handleOrientation, true);
+    window.addEventListener('deviceorientation', handleOrientation, true);
   }
 
   async function startGeoWatch(){
@@ -484,17 +510,25 @@
 
     geoWatchId = navigator.geolocation.watchPosition(async pos => {
       const incoming = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+
+      // filtro minimo sulla posizione: più reattivo del precedente
       if(!lastPosition){
         lastPosition = incoming;
       } else {
         lastPosition = {
-          lat: lastPosition.lat * 0.65 + incoming.lat * 0.35,
-          lng: lastPosition.lng * 0.65 + incoming.lng * 0.35
+          lat: lastPosition.lat * 0.35 + incoming.lat * 0.65,
+          lng: lastPosition.lng * 0.35 + incoming.lng * 0.65
         };
       }
 
-      if(typeof pos.coords.heading === 'number' && !Number.isNaN(pos.coords.heading)){
-        compassHeading = normalizeAngle(pos.coords.heading);
+      // uso l'heading del GPS solo come appoggio quando è affidabile e il device è in movimento
+      if(
+        typeof pos.coords.heading === 'number' &&
+        !Number.isNaN(pos.coords.heading) &&
+        typeof pos.coords.speed === 'number' &&
+        pos.coords.speed > 1.5
+      ){
+        compassHeading = smoothAngle(compassHeading, normalizeAngle(pos.coords.heading), 0.35);
       }
 
       if(currentTeamPayload && currentTeamPayload.profile && currentTeamPayload.profile.mode === 'extraurbano'){
@@ -502,7 +536,9 @@
         if(clue){
           updateGeoUI(clue);
           const dist = distanceMeters(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng);
-          if(dist <= 10){
+          const now = Date.now();
+          if(dist <= 10 && now - lastGeoCheckAt > 1400){
+            lastGeoCheckAt = now;
             await geoCheckNow();
           }
         }
@@ -512,7 +548,7 @@
     }, {
       enableHighAccuracy:true,
       maximumAge:0,
-      timeout:5000
+      timeout:4000
     });
   }
 
