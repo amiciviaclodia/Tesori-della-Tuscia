@@ -1,786 +1,769 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="it">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.7">
-  <style type="text/css">
-    body {background-color: #f0ebe0}
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.4px Georgia; color: #ffffff; -webkit-text-stroke: #ffffff}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.4px Georgia; color: #ffffff; -webkit-text-stroke: #ffffff; min-height: 11.0px}
-    span.s1 {font-kerning: none}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tesori della Tuscia · V3.1</title>
+  <style>
+    :root{
+      --bg:#f3efe6; --paper:#fcfaf5; --ink:#2d2a26; --muted:#6d675f; --line:#d8d1c5;
+      --green:#355845; --green-soft:#e5eee8; --accent:#8f7f61; --warn:#8a6a2f; --bad:#7b3b31;
+      --shadow:0 10px 30px rgba(0,0,0,.06); --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,serif;line-height:1.5}
+    header{padding:28px 18px 22px;background:linear-gradient(180deg,#3a5b48,#355845);color:#fff;box-shadow:var(--shadow)}
+    header .eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;opacity:.85}
+    header h1{margin:.2rem 0;font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.08}
+    header p{margin:.35rem 0 0;max-width:900px;color:#ecf3ef}
+    main{max-width:1180px;margin:0 auto;padding:18px}
+    .toolbar,.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+    @media (max-width:960px){.layout{grid-template-columns:1fr}}
+    .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    .card h2,.card h3{margin:.1rem 0 .7rem;line-height:1.2}
+    .muted{color:var(--muted)} .small{font-size:.93rem} .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+    .hidden{display:none!important}
+    button,input,select{font:inherit}
+    button{border:none;cursor:pointer;border-radius:999px;padding:12px 18px;background:var(--green);color:#fff;box-shadow:var(--shadow)}
+    button.secondary{background:#fff;color:var(--green);border:1px solid var(--green)}
+    button.warn{background:var(--warn)}
+    button.danger{background:var(--bad)}
+    button:disabled{opacity:.45;cursor:not-allowed}
+    input,select{width:100%;padding:11px 13px;border-radius:14px;border:1px solid var(--line);background:#fff;color:var(--ink)}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width:700px){.grid-2{grid-template-columns:1fr}}
+    .field{margin-bottom:12px} .field label{display:block;font-size:.95rem;margin-bottom:5px;color:var(--muted)}
+    .divider{height:1px;background:var(--line);margin:14px 0}
+    .pills{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+    .pill{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:.9rem}
+    .msg{padding:12px 14px;border-radius:14px;margin-top:12px;font-size:.96rem}
+    .msg.ok{background:var(--green-soft);color:#234134}
+    .msg.warn{background:#f6efdc;color:#6b531e}
+    .msg.bad{background:#f4e2de;color:#6a2f27}
+    .clue{background:linear-gradient(180deg,#fff,#f8f4ec);border:1px solid #e5ddcf;border-radius:20px;padding:18px}
+    .clue .n{color:var(--accent);text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;margin-bottom:8px}
+    .clue h3{font-size:1.5rem;margin:.1rem 0 .35rem}
+    .hero-geo{padding:18px;border-radius:20px;background:linear-gradient(180deg,#fff,#eef5f0);border:1px solid #d8e5dd}
+    .arrowWrap{display:flex;justify-content:center;align-items:center;padding:10px 0 8px}
+    .arrow{
+      width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;
+      border-bottom:30px solid var(--green);transform-origin:50% 76%;transition:transform .06s linear;
+      filter:drop-shadow(0 2px 4px rgba(0,0,0,.12));
+    }
+    .distance{font-size:2rem;font-weight:bold;text-align:center}
+    .team-list{display:grid;gap:10px}
+    .team-item{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}
+    .section-title{margin:.15rem 0 .7rem;font-size:1.2rem}
   </style>
 </head>
 <body>
-<p class="p1"><span class="s1">TESORI DELLA TUSCIA · V3.1&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="it"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;title&gt;Tesori della Tuscia · V3.1&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;style&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>:root{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>--bg:#f3efe6; --paper:#fcfaf5; --ink:#2d2a26; --muted:#6d675f; --line:#d8d1c5;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>--green:#355845; --green-soft:#e5eee8; --accent:#8f7f61; --warn:#8a6a2f; --bad:#7b3b31;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>--shadow:0 10px 30px rgba(0,0,0,.06); --radius:22px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>*{box-sizing:border-box}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,serif;line-height:1.5}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>header{padding:28px 18px 22px;background:linear-gradient(180deg,#3a5b48,#355845);color:#fff;box-shadow:var(--shadow)}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>header .eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;opacity:.85}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>header h1{margin:.2rem 0;font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.08}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>header p{margin:.35rem 0 0;max-width:900px;color:#ecf3ef}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>main{max-width:1180px;margin:0 auto;padding:18px}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.toolbar,.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>@media (max-width:960px){.layout{grid-template-columns:1fr}}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.card h2,.card h3{margin:.1rem 0 .7rem;line-height:1.2}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.muted{color:var(--muted)} .small{font-size:.93rem} .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.hidden{display:none!important}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>button,input,select{font:inherit}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>button{border:none;cursor:pointer;border-radius:999px;padding:12px 18px;background:var(--green);color:#fff;box-shadow:var(--shadow)}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>button.secondary{background:#fff;color:var(--green);border:1px solid var(--green)}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>button.warn{background:var(--warn)}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>button.danger{background:var(--bad)}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>button:disabled{opacity:.45;cursor:not-allowed}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>input,select{width:100%;padding:11px 13px;border-radius:14px;border:1px solid var(--line);background:#fff;color:var(--ink)}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>@media (max-width:700px){.grid-2{grid-template-columns:1fr}}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.field{margin-bottom:12px} .field label{display:block;font-size:.95rem;margin-bottom:5px;color:var(--muted)}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.divider{height:1px;background:var(--line);margin:14px 0}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.pills{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.pill{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:.9rem}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.msg{padding:12px 14px;border-radius:14px;margin-top:12px;font-size:.96rem}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.msg.ok{background:var(--green-soft);color:#234134}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.msg.warn{background:#f6efdc;color:#6b531e}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.msg.bad{background:#f4e2de;color:#6a2f27}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.clue{background:linear-gradient(180deg,#fff,#f8f4ec);border:1px solid #e5ddcf;border-radius:20px;padding:18px}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.clue .n{color:var(--accent);text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;margin-bottom:8px}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.clue h3{font-size:1.5rem;margin:.1rem 0 .35rem}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.hero-geo{padding:18px;border-radius:20px;background:linear-gradient(180deg,#fff,#eef5f0);border:1px solid #d8e5dd}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.arrowWrap{display:flex;justify-content:center;align-items:center;padding:10px 0 8px}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.arrow{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>border-bottom:30px solid var(--green);transform-origin:50% 76%;transition:transform .06s linear;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>filter:drop-shadow(0 2px 4px rgba(0,0,0,.12));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.distance{font-size:2rem;font-weight:bold;text-align:center}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.team-list{display:grid;gap:10px}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.team-item{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.section-title{margin:.15rem 0 .7rem;font-size:1.2rem}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;header&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="eyebrow"&gt;Tesori della Tuscia · V3.1&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;h1&gt;Gioco completo con urbano a codici ed extraurbano a geolocalizzazione&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;p&gt;Le squadre urbane avanzano inserendo parole chiave. Le squadre extraurbane seguono freccia e distanza, con sblocco automatico entro 10 metri dal punto. L’amministratore avvia, osserva e chiude: non è più il motore del gioco.&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/header&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;main&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="toolbar"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button id="playerTabBtn"&gt;Modalità squadra&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button id="adminTabBtn" class="secondary"&gt;Modalità amministratore&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="statusCard" class="card small"&gt;Caricamento del gioco…&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="layout"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;section id="playerView" class="card"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;h2&gt;Squadra&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;p class="muted"&gt;Una squadra, un capitano, un solo obiettivo per volta. Il gioco cambia comportamento in base al profilo scelto.&lt;/p&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="grid-2"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="field"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label&gt;Nome squadra&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input id="teamNameInput" placeholder="Es. Falchi di Tufo" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="field"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label&gt;Nome capitano&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input id="captainInput" placeholder="Es. Paolo" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="field"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label&gt;Giocatori (1-4, separati da virgola)&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input id="playersInput" placeholder="Paolo, Luca, Sara" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="field"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label&gt;Profilo di gioco&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;select id="profileSelect"&gt;&lt;/select&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="field"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label&gt;Codice squadra esistente&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input id="joinCodeInput" class="mono" placeholder="TEAM-AB12CD" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="row"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button id="createTeamBtn"&gt;Crea squadra&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button id="joinTeamBtn" class="secondary"&gt;Entra con codice&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="divider"&gt;&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="row"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="muted small"&gt;Codice squadra attivo&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div id="currentCode" class="mono"&gt;—&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div style="flex:1"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button id="refreshTeamBtn" class="secondary"&gt;Aggiorna&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div id="playerGame" class="hidden"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="pills"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;span class="pill" id="pillTeam"&gt;Squadra: -&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;span class="pill" id="pillProfile"&gt;Profilo: -&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;span class="pill" id="pillState"&gt;Stato: -&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="waitBox" class="msg warn hidden"&gt;La squadra è registrata. Attende l’avvio del gioco.&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="pausedBox" class="msg warn hidden"&gt;La squadra è momentaneamente sospesa dall’amministratore.&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="endedBox" class="msg ok hidden"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="errorBox" class="msg bad hidden"&gt;&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="clueBox" class="clue hidden"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="n" id="clueNumber"&gt;Indizio&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;h3 id="clueTitle"&gt;—&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;p id="clueText"&gt;—&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="urbanBox" class="card hidden" style="margin-top:12px;padding:14px;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="small muted"&gt;Inserisci la parola chiave trovata sul posto o dedotta correttamente.&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="field" style="margin-top:10px;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label&gt;Parola chiave&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input id="codeInput" placeholder="Es. altieri" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button id="verifyCodeBtn"&gt;Verifica codice&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="geoBox" class="hero-geo hidden" style="margin-top:12px;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="small muted"&gt;Supporto di orientamento minimo, in stile Narrazione: solo freccia e distanza. Il passaggio si sblocca automaticamente a 10 metri.&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="arrowWrap"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="arrow" class="arrow"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="distance" id="distanceValue"&gt;— m&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="small muted" style="text-align:center;margin-top:6px;"&gt;Punto attivo: &lt;span id="geoTargetLabel"&gt;—&lt;/span&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="row" style="justify-content:center;margin-top:12px;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button id="geoStartBtn"&gt;Attiva geolocalizzazione&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button id="geoCheckBtn" class="secondary"&gt;Controlla adesso&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="completeBox" class="msg ok hidden"&gt;Percorso completato. Attendi la chiusura o il verdetto finale.&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/section&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;section id="adminView" class="card hidden"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;h2&gt;Amministratore&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;p class="muted"&gt;Qui si gestisce solo la regia generale. La progressione del gioco è automatica.&lt;/p&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div id="adminLoginBox"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;label&gt;Password amministratore&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;input id="adminPasswordInput" type="password" placeholder="1234" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button id="adminLoginBtn"&gt;Entra&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div id="adminPanel" class="hidden"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="row" style="margin-bottom:12px;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button id="startGameBtn"&gt;Avvia partita&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button id="endGameBtn" class="danger"&gt;Chiudi partita&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button id="resetGameBtn" class="secondary"&gt;Pulisci concluse&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div style="flex:1"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button id="refreshAdminBtn" class="secondary"&gt;Aggiorna&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;button id="adminLogoutBtn" class="secondary"&gt;Esci&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="gameStateMsg" class="msg warn"&gt;Partita in attesa.&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h3 class="section-title"&gt;Monitor squadre&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="teamsList" class="team-list"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/section&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/main&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let bootstrap = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let currentTeamId = localStorage.getItem('tesori_current_team_v31') || null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let adminUnlocked = false;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let currentTeamPayload = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let watchTimer = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let compassHeading = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let smoothedHeading = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let geoWatchId = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let lastPosition = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let compassStarted = false;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>let lastGeoCheckAt = 0;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const statusCard = document.getElementById('statusCard');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const playerView = document.getElementById('playerView');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const adminView = document.getElementById('adminView');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const profileSelect = document.getElementById('profileSelect');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const teamNameInput = document.getElementById('teamNameInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const captainInput = document.getElementById('captainInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const playersInput = document.getElementById('playersInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const joinCodeInput = document.getElementById('joinCodeInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const currentCode = document.getElementById('currentCode');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const playerGame = document.getElementById('playerGame');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const pillTeam = document.getElementById('pillTeam');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const pillProfile = document.getElementById('pillProfile');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const pillState = document.getElementById('pillState');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const waitBox = document.getElementById('waitBox');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const pausedBox = document.getElementById('pausedBox');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const endedBox = document.getElementById('endedBox');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const errorBox = document.getElementById('errorBox');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const clueBox = document.getElementById('clueBox');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const clueNumber = document.getElementById('clueNumber');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const clueTitle = document.getElementById('clueTitle');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const clueText = document.getElementById('clueText');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const urbanBox = document.getElementById('urbanBox');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const geoBox = document.getElementById('geoBox');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const codeInput = document.getElementById('codeInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const arrow = document.getElementById('arrow');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const distanceValue = document.getElementById('distanceValue');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const geoTargetLabel = document.getElementById('geoTargetLabel');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const completeBox = document.getElementById('completeBox');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const adminLoginBox = document.getElementById('adminLoginBox');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const adminPanel = document.getElementById('adminPanel');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const adminPasswordInput = document.getElementById('adminPasswordInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const gameStateMsg = document.getElementById('gameStateMsg');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const teamsList = document.getElementById('teamsList');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function setStatus(text){ statusCard.innerHTML = text; }</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function api(url, options={}){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const res = await fetch(url, {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>headers: { 'Content-Type': 'application/json' },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>...options</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const data = await res.json().catch(() =&gt; ({}));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!res.ok) throw new Error(data.error || 'Errore di comunicazione');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return data;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function humanState(team, game){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(game.status === 'ended' &amp;&amp; team.winner) return 'Vincitore';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(game.status === 'ended') return 'Partita conclusa';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(team.status === 'waiting') return 'In attesa';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(team.status === 'playing') return 'In gioco';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(team.status === 'paused') return 'Sospesa';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(team.status === 'completed') return 'Completato';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return team.status;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function parsePlayers(text){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return (text || '').split(',').map(v =&gt; v.trim()).filter(Boolean).slice(0, 4);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function loadBootstrap(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>bootstrap = await api('/api/bootstrap');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>profileSelect.innerHTML = bootstrap.profiles.map(p =&gt; `&lt;option value="${p.id}"&gt;${p.label}&lt;/option&gt;`).join('');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>renderAdminSummary(bootstrap.state);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>currentCode.textContent = currentTeamId || '—';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(currentTeamId){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>try{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>await loadCurrentTeam();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}catch(err){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>currentTeamId = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>currentTeamPayload = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>localStorage.removeItem('tesori_current_team_v31');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>currentCode.textContent = '—';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>playerGame.classList.add('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>setStatus(`&lt;b&gt;${bootstrap.config.gameTitle}&lt;/b&gt; · V3.1 pronta. Urbano = codici. Extraurbano = freccia + distanza + sblocco a ${bootstrap.config.geoFocusMeters} metri.`);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function createTeam(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>try{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const players = parsePlayers(playersInput.value);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const payload = await api('/api/teams', {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>method:'POST',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body: JSON.stringify({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>teamName: teamNameInput.value.trim(),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>captain: captainInput.value.trim(),</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>players,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>profileId: profileSelect.value</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>})</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>currentTeamId = payload.team.id;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>localStorage.setItem('tesori_current_team_v31', currentTeamId);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>currentCode.textContent = currentTeamId;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>teamNameInput.value = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>captainInput.value = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>playersInput.value = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await loadBootstrap();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>alert('Squadra creata: ' + currentTeamId);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}catch(err){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>alert(err.message);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function joinTeam(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const id = joinCodeInput.value.trim().toUpperCase();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!id) return alert('Inserisci un codice squadra.');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>currentTeamId = id;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>localStorage.setItem('tesori_current_team_v31', currentTeamId);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>currentCode.textContent = currentTeamId;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>await loadCurrentTeam().catch(err =&gt; alert(err.message));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function loadCurrentTeam(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!currentTeamId){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>playerGame.classList.add('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>currentTeamPayload = await api('/api/teams/' + encodeURIComponent(currentTeamId));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>renderPlayer(currentTeamPayload);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>await loadAdminMonitorIfOpen();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function renderPlayer(payload){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const { team, game, profile } = payload;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>playerGame.classList.remove('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>pillTeam.textContent = 'Squadra: ' + team.teamName;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>pillProfile.textContent = 'Profilo: ' + profile.label;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>pillState.textContent = 'Stato: ' + humanState(team, game);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>waitBox.classList.add('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>pausedBox.classList.add('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>endedBox.classList.add('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>errorBox.classList.add('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>clueBox.classList.add('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>urbanBox.classList.add('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>geoBox.classList.add('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>completeBox.classList.add('hidden');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(team.lastError){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>errorBox.textContent = team.lastError;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>errorBox.classList.remove('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(game.status === 'waiting'){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>waitBox.classList.remove('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(game.status === 'ended'){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>endedBox.textContent = team.winner ? 'La partita si è chiusa e la vostra squadra è risultata vincitrice.' : 'La partita è terminata. Grazie per aver partecipato.';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>endedBox.classList.remove('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(team.status === 'paused'){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>pausedBox.classList.remove('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(team.status === 'completed'){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>completeBox.classList.remove('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const clue = profile.clues[team.clueIndex];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!clue) return;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>clueBox.classList.remove('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>clueNumber.textContent = 'Indizio ' + (team.clueIndex + 1) + ' di ' + profile.clues.length;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>clueTitle.textContent = clue.title;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>clueText.textContent = clue.text;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(profile.mode === 'urbano'){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>urbanBox.classList.remove('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>} else {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>geoBox.classList.remove('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>geoTargetLabel.textContent = clue.title;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>updateGeoUI(clue);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function normalizeAngle(deg){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return ((deg % 360) + 360) % 360;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function shortestAngleDelta(from, to){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return ((to - from + 540) % 360) - 180;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function smoothAngle(current, target, factor = 0.28){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(current === null || Number.isNaN(current)) return normalizeAngle(target);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const delta = shortestAngleDelta(current, target);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return normalizeAngle(current + delta * factor);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function getScreenAngle(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(window.screen?.orientation?.angle != null) return window.screen.orientation.angle;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(typeof window.orientation === 'number') return window.orientation;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function extractCompassHeading(evt){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(typeof evt.webkitCompassHeading === 'number' &amp;&amp; !Number.isNaN(evt.webkitCompassHeading)){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>return normalizeAngle(evt.webkitCompassHeading);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(typeof evt.alpha === 'number' &amp;&amp; !Number.isNaN(evt.alpha)){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>return normalizeAngle(360 - evt.alpha + getScreenAngle());</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function updateGeoUI(clue){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!lastPosition){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>distanceValue.textContent = '— m';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>arrow.style.transform = 'rotate(0deg)';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const dist = Math.round(distanceMeters(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>distanceValue.textContent = dist + ' m';</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const bearing = bearingDegrees(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const heading = typeof compassHeading === 'number' ? compassHeading : 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const targetRelative = normalizeAngle(bearing - heading);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const factor = dist &lt;= 12 ? 0.22 : dist &lt;= 25 ? 0.42 : 0.62;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>smoothedHeading = smoothAngle(smoothedHeading, targetRelative, factor);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>arrow.style.transform = `rotate(${smoothedHeading}deg)`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function distanceMeters(lat1, lon1, lat2, lon2){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const R = 6371000;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const toRad = d =&gt; d * Math.PI / 180;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const dLat = toRad(lat2 - lat1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const dLon = toRad(lon2 - lon1);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const a = Math.sin(dLat/2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2) ** 2;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function bearingDegrees(lat1, lon1, lat2, lon2){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const toRad = d =&gt; d * Math.PI / 180;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const toDeg = r =&gt; r * 180 / Math.PI;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const y = Math.sin(toRad(lon2-lon1)) * Math.cos(toRad(lat2));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const x = Math.cos(toRad(lat1))*Math.sin(toRad(lat2)) - Math.sin(toRad(lat1))*Math.cos(toRad(lat2))*Math.cos(toRad(lon2-lon1));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return (toDeg(Math.atan2(y, x)) + 360) % 360;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function verifyCode(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!currentTeamPayload) return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>try{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await api(`/api/teams/${encodeURIComponent(currentTeamPayload.team.id)}/verify-code`, {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>method:'POST',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body: JSON.stringify({ answer: codeInput.value })</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>codeInput.value = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await loadCurrentTeam();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}catch(err){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>alert(err.message);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await loadCurrentTeam();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function geoCheckNow(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!currentTeamPayload || !lastPosition) return alert('Geolocalizzazione non ancora disponibile.');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>try{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await api(`/api/teams/${encodeURIComponent(currentTeamPayload.team.id)}/geo-check`, {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>method:'POST',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body: JSON.stringify({ lat: lastPosition.lat, lng: lastPosition.lng })</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await loadCurrentTeam();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}catch(err){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await loadCurrentTeam();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function enableCompassIfNeeded(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!window.DeviceOrientationEvent || compassStarted) return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>compassStarted = true;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(typeof DeviceOrientationEvent.requestPermission === 'function'){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>try{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const response = await DeviceOrientationEvent.requestPermission();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(response !== 'granted'){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>alert('Permesso bussola non concesso. La freccia userà solo il GPS e sarà meno precisa.');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}catch(err){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>alert('Permesso bussola non disponibile: ' + err.message);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const handleOrientation = evt =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const rawHeading = extractCompassHeading(evt);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(rawHeading === null) return;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const factor = 0.72;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>compassHeading = smoothAngle(compassHeading, rawHeading, factor);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(currentTeamPayload?.profile?.mode === 'extraurbano'){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const clue = currentTeamPayload.profile.clues[currentTeamPayload.team.clueIndex];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(clue) updateGeoUI(clue);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>window.addEventListener('deviceorientationabsolute', handleOrientation, true);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>window.addEventListener('deviceorientation', handleOrientation, true);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function startGeoWatch(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!navigator.geolocation) return alert('Geolocalizzazione non supportata dal dispositivo.');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>await enableCompassIfNeeded();</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(geoWatchId !== null){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>navigator.geolocation.clearWatch(geoWatchId);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>geoWatchId = navigator.geolocation.watchPosition(async pos =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const incoming = { lat: pos.coords.latitude, lng: pos.coords.longitude };</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(!lastPosition){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>lastPosition = incoming;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>} else {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>lastPosition = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>lat: lastPosition.lat * 0.35 + incoming.lat * 0.65,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>lng: lastPosition.lng * 0.35 + incoming.lng * 0.65</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>typeof pos.coords.heading === 'number' &amp;&amp;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>!Number.isNaN(pos.coords.heading) &amp;&amp;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>typeof pos.coords.speed === 'number' &amp;&amp;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>pos.coords.speed &gt; 1.5</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>compassHeading = smoothAngle(compassHeading, normalizeAngle(pos.coords.heading), 0.35);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(currentTeamPayload &amp;&amp; currentTeamPayload.profile &amp;&amp; currentTeamPayload.profile.mode === 'extraurbano'){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const clue = currentTeamPayload.profile.clues[currentTeamPayload.team.clueIndex];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(clue){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>updateGeoUI(clue);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>const dist = distanceMeters(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>const now = Date.now();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>if(dist &lt;= 10 &amp;&amp; now - lastGeoCheckAt &gt; 1400){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>lastGeoCheckAt = now;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>await geoCheckNow();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}, err =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>alert('Geolocalizzazione non disponibile: ' + err.message);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}, {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>enableHighAccuracy:true,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>maximumAge:0,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>timeout:4000</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function renderAdminSummary(state){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!adminUnlocked){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>adminLoginBox.classList.remove('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>adminPanel.classList.add('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>adminLoginBox.classList.add('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>adminPanel.classList.remove('hidden');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(state.game.status === 'waiting') gameStateMsg.textContent = 'Partita in attesa.';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(state.game.status === 'started') gameStateMsg.textContent = 'Partita avviata. Progressione automatica attiva.';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(state.game.status === 'ended' &amp;&amp; state.game.winnerTeamId){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const winner = state.teams.find(t =&gt; t.id === state.game.winnerTeamId);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>gameStateMsg.textContent = 'Partita conclusa. Vincitore: ' + (winner ? winner.teamName : state.game.winnerTeamId);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>} else if(state.game.status === 'ended') {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>gameStateMsg.textContent = 'Partita conclusa.';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>teamsList.innerHTML = '';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!state.teams.length){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>teamsList.innerHTML = '&lt;div class="muted"&gt;Nessuna squadra registrata.&lt;/div&gt;';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>state.teams.forEach(team =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const profile = bootstrap?.profiles?.find(p =&gt; p.id === team.profileId);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const div = document.createElement('div');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>div.className = 'team-item';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>div.innerHTML = `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="row"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h4 style="margin:.1rem 0 .25rem;"&gt;${team.teamName}&lt;/h4&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="mono small muted"&gt;${team.id}&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div style="flex:1"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;span class="pill"&gt;${humanState(team, state.game)}&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="small muted"&gt;Capitano: ${team.captain} · Giocatori: ${team.players.join(', ')}&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="small muted"&gt;Profilo: ${profile ? profile.label : team.profileId}&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="small muted"&gt;Progressione: ${team.clueIndex} / ${profile ? profile.clueCount : '?'}&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>${team.completedAt ? `&lt;div class="small"&gt;Completata alle: &lt;b&gt;${new Date(team.completedAt).toLocaleTimeString()}&lt;/b&gt;&lt;/div&gt;` : ''}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>${team.lastError ? `&lt;div class="msg bad"&gt;${team.lastError}&lt;/div&gt;` : ''}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="row" style="margin-top:10px;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>${(team.status === 'waiting' || team.status === 'playing') ? `&lt;button class="warn" onclick="pauseSingleTeam('${team.id}')"&gt;Sospendi&lt;/button&gt;` : ''}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>${team.status === 'paused' ? `&lt;button class="secondary" onclick="resumeSingleTeam('${team.id}')"&gt;Riattiva&lt;/button&gt;` : ''}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>${team.status === 'paused' ? `&lt;button class="danger" onclick="deleteSingleTeam('${team.id}')"&gt;Cancella squadra&lt;/button&gt;` : ''}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>${team.status === 'completed' ? `&lt;button class="secondary" onclick="resetSingleTeam('${team.id}')"&gt;Reset squadra&lt;/button&gt;` : ''}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>teamsList.appendChild(div);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function loadAdminMonitorIfOpen(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!adminUnlocked) return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const state = await api('/api/admin/monitor');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>renderAdminSummary(state);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function startGame(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>await api('/api/admin/start', { method:'POST' });</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>await loadBootstrap();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function endGame(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>await api('/api/admin/end', { method:'POST' });</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>await loadBootstrap();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function resetGame(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!confirm('Vuoi eliminare solo le squadre concluse?')) return;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>await api('/api/admin/reset', { method:'POST' });</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>await loadBootstrap();</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(currentTeamId){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>try{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>await loadCurrentTeam();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}catch(e){}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function resetSingleTeam(teamId){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!confirm(`Vuoi eliminare la squadra conclusa ${teamId}?`)) return;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>try{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await api('/api/admin/reset-team/' + encodeURIComponent(teamId), { method:'POST' });</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(currentTeamId === teamId){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>currentTeamId = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>currentTeamPayload = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>localStorage.removeItem('tesori_current_team_v31');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>currentCode.textContent = '—';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>playerGame.classList.add('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await loadBootstrap();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await loadAdminMonitorIfOpen();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}catch(err){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>alert(err.message);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function pauseSingleTeam(teamId){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!confirm(`Vuoi sospendere la squadra ${teamId}?`)) return;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>try{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await api('/api/admin/pause-team/' + encodeURIComponent(teamId), { method:'POST' });</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await loadBootstrap();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await loadAdminMonitorIfOpen();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(currentTeamId === teamId){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>try { await loadCurrentTeam(); } catch(e){}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}catch(err){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>alert(err.message);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function resumeSingleTeam(teamId){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!confirm(`Vuoi riattivare la squadra ${teamId}?`)) return;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>try{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await api('/api/admin/resume-team/' + encodeURIComponent(teamId), { method:'POST' });</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await loadBootstrap();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await loadAdminMonitorIfOpen();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(currentTeamId === teamId){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>try { await loadCurrentTeam(); } catch(e){}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}catch(err){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>alert(err.message);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>async function deleteSingleTeam(teamId){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!confirm(`Vuoi cancellare definitivamente la squadra sospesa ${teamId}?`)) return;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>try{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await api('/api/admin/delete-team/' + encodeURIComponent(teamId), { method:'POST' });</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(currentTeamId === teamId){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>currentTeamId = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>currentTeamPayload = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>localStorage.removeItem('tesori_current_team_v31');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>currentCode.textContent = '—';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>playerGame.classList.add('hidden');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await loadBootstrap();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>await loadAdminMonitorIfOpen();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}catch(err){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>alert(err.message);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function loginAdmin(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!bootstrap) return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(adminPasswordInput.value !== bootstrap.config.adminPassword) return alert('Password non corretta.');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>adminUnlocked = true;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>renderAdminSummary(bootstrap.state);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function logoutAdmin(){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>adminUnlocked = false;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>renderAdminSummary(bootstrap ? bootstrap.state : { game:{status:'waiting'}, teams:[] });</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('playerTabBtn').addEventListener('click', ()=&gt;{ playerView.classList.remove('hidden'); adminView.classList.add('hidden'); });</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('adminTabBtn').addEventListener('click', ()=&gt;{ adminView.classList.remove('hidden'); playerView.classList.add('hidden'); });</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('createTeamBtn').addEventListener('click', createTeam);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('joinTeamBtn').addEventListener('click', joinTeam);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('verifyCodeBtn').addEventListener('click', verifyCode);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('refreshTeamBtn').addEventListener('click', loadCurrentTeam);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('geoStartBtn').addEventListener('click', startGeoWatch);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('geoCheckBtn').addEventListener('click', geoCheckNow);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('adminLoginBtn').addEventListener('click', loginAdmin);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('adminLogoutBtn').addEventListener('click', logoutAdmin);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('startGameBtn').addEventListener('click', startGame);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('endGameBtn').addEventListener('click', endGame);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('resetGameBtn').addEventListener('click', resetGame);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById('refreshAdminBtn').addEventListener('click', loadAdminMonitorIfOpen);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>setInterval(async () =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(currentTeamId) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>try { await loadCurrentTeam(); } catch(e){}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(adminUnlocked) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>try { await loadAdminMonitorIfOpen(); } catch(e){}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}, 3000);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>loadBootstrap().catch(err =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>setStatus('Errore di avvio: ' + err.message);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>});</span></p>
-<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+<header>
+  <div class="eyebrow">Tesori della Tuscia · V3.1</div>
+  <h1>Gioco completo con urbano a codici ed extraurbano a geolocalizzazione</h1>
+  <p>Le squadre urbane avanzano inserendo parole chiave. Le squadre extraurbane seguono freccia e distanza, con sblocco automatico entro 10 metri dal punto. L’amministratore avvia, osserva e chiude: non è più il motore del gioco.</p>
+</header>
+
+<main>
+  <div class="toolbar">
+    <button id="playerTabBtn">Modalità squadra</button>
+    <button id="adminTabBtn" class="secondary">Modalità amministratore</button>
+  </div>
+
+  <div id="statusCard" class="card small">Caricamento del gioco…</div>
+
+  <div class="layout">
+    <section id="playerView" class="card">
+      <h2>Squadra</h2>
+      <p class="muted">Una squadra, un capitano, un solo obiettivo per volta. Il gioco cambia comportamento in base al profilo scelto.</p>
+
+      <div class="grid-2">
+        <div>
+          <div class="field">
+            <label>Nome squadra</label>
+            <input id="teamNameInput" placeholder="Es. Falchi di Tufo" />
+          </div>
+          <div class="field">
+            <label>Nome capitano</label>
+            <input id="captainInput" placeholder="Es. Paolo" />
+          </div>
+          <div class="field">
+            <label>Giocatori (1-4, separati da virgola)</label>
+            <input id="playersInput" placeholder="Paolo, Luca, Sara" />
+          </div>
+        </div>
+        <div>
+          <div class="field">
+            <label>Profilo di gioco</label>
+            <select id="profileSelect"></select>
+          </div>
+          <div class="field">
+            <label>Codice squadra esistente</label>
+            <input id="joinCodeInput" class="mono" placeholder="TEAM-AB12CD" />
+          </div>
+          <div class="row">
+            <button id="createTeamBtn">Crea squadra</button>
+            <button id="joinTeamBtn" class="secondary">Entra con codice</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="row">
+        <div>
+          <div class="muted small">Codice squadra attivo</div>
+          <div id="currentCode" class="mono">—</div>
+        </div>
+        <div style="flex:1"></div>
+        <button id="refreshTeamBtn" class="secondary">Aggiorna</button>
+      </div>
+
+      <div id="playerGame" class="hidden">
+        <div class="pills">
+          <span class="pill" id="pillTeam">Squadra: -</span>
+          <span class="pill" id="pillProfile">Profilo: -</span>
+          <span class="pill" id="pillState">Stato: -</span>
+        </div>
+
+        <div id="waitBox" class="msg warn hidden">La squadra è registrata. Attende l’avvio del gioco.</div>
+        <div id="pausedBox" class="msg warn hidden">La squadra è momentaneamente sospesa dall’amministratore.</div>
+        <div id="endedBox" class="msg ok hidden"></div>
+        <div id="errorBox" class="msg bad hidden"></div>
+
+        <div id="clueBox" class="clue hidden">
+          <div class="n" id="clueNumber">Indizio</div>
+          <h3 id="clueTitle">—</h3>
+          <p id="clueText">—</p>
+        </div>
+
+        <div id="urbanBox" class="card hidden" style="margin-top:12px;padding:14px;">
+          <div class="small muted">Inserisci la parola chiave trovata sul posto o dedotta correttamente.</div>
+          <div class="field" style="margin-top:10px;">
+            <label>Parola chiave</label>
+            <input id="codeInput" placeholder="Es. altieri" />
+          </div>
+          <button id="verifyCodeBtn">Verifica codice</button>
+        </div>
+
+        <div id="geoBox" class="hero-geo hidden" style="margin-top:12px;">
+          <div class="small muted">Supporto di orientamento minimo, in stile Narrazione: solo freccia e distanza. Il passaggio si sblocca automaticamente a 10 metri.</div>
+          <div class="arrowWrap">
+            <div id="arrow" class="arrow"></div>
+          </div>
+          <div class="distance" id="distanceValue">— m</div>
+          <div class="small muted" style="text-align:center;margin-top:6px;">Punto attivo: <span id="geoTargetLabel">—</span></div>
+          <div class="row" style="justify-content:center;margin-top:12px;">
+            <button id="geoStartBtn">Attiva geolocalizzazione</button>
+            <button id="geoCheckBtn" class="secondary">Controlla adesso</button>
+          </div>
+        </div>
+
+        <div id="completeBox" class="msg ok hidden">Percorso completato. Attendi la chiusura o il verdetto finale.</div>
+      </div>
+    </section>
+
+    <section id="adminView" class="card hidden">
+      <h2>Amministratore</h2>
+      <p class="muted">Qui si gestisce solo la regia generale. La progressione del gioco è automatica.</p>
+
+      <div id="adminLoginBox">
+        <div class="field">
+          <label>Password amministratore</label>
+          <input id="adminPasswordInput" type="password" placeholder="1234" />
+        </div>
+        <button id="adminLoginBtn">Entra</button>
+      </div>
+
+      <div id="adminPanel" class="hidden">
+        <div class="row" style="margin-bottom:12px;">
+          <button id="startGameBtn">Avvia partita</button>
+          <button id="endGameBtn" class="danger">Chiudi partita</button>
+          <button id="resetGameBtn" class="secondary">Pulisci concluse</button>
+          <div style="flex:1"></div>
+          <button id="refreshAdminBtn" class="secondary">Aggiorna</button>
+          <button id="adminLogoutBtn" class="secondary">Esci</button>
+        </div>
+
+        <div id="gameStateMsg" class="msg warn">Partita in attesa.</div>
+        <h3 class="section-title">Monitor squadre</h3>
+        <div id="teamsList" class="team-list"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+  let bootstrap = null;
+  let currentTeamId = localStorage.getItem('tesori_current_team_v31') || null;
+  let adminUnlocked = false;
+  let currentTeamPayload = null;
+  let compassHeading = null;
+  let smoothedHeading = null;
+  let geoWatchId = null;
+  let lastPosition = null;
+  let compassStarted = false;
+  let lastGeoCheckAt = 0;
+
+  const statusCard = document.getElementById('statusCard');
+  const playerView = document.getElementById('playerView');
+  const adminView = document.getElementById('adminView');
+  const profileSelect = document.getElementById('profileSelect');
+  const teamNameInput = document.getElementById('teamNameInput');
+  const captainInput = document.getElementById('captainInput');
+  const playersInput = document.getElementById('playersInput');
+  const joinCodeInput = document.getElementById('joinCodeInput');
+  const currentCode = document.getElementById('currentCode');
+
+  const playerGame = document.getElementById('playerGame');
+  const pillTeam = document.getElementById('pillTeam');
+  const pillProfile = document.getElementById('pillProfile');
+  const pillState = document.getElementById('pillState');
+  const waitBox = document.getElementById('waitBox');
+  const pausedBox = document.getElementById('pausedBox');
+  const endedBox = document.getElementById('endedBox');
+  const errorBox = document.getElementById('errorBox');
+  const clueBox = document.getElementById('clueBox');
+  const clueNumber = document.getElementById('clueNumber');
+  const clueTitle = document.getElementById('clueTitle');
+  const clueText = document.getElementById('clueText');
+  const urbanBox = document.getElementById('urbanBox');
+  const geoBox = document.getElementById('geoBox');
+  const codeInput = document.getElementById('codeInput');
+  const arrow = document.getElementById('arrow');
+  const distanceValue = document.getElementById('distanceValue');
+  const geoTargetLabel = document.getElementById('geoTargetLabel');
+  const completeBox = document.getElementById('completeBox');
+
+  const adminLoginBox = document.getElementById('adminLoginBox');
+  const adminPanel = document.getElementById('adminPanel');
+  const adminPasswordInput = document.getElementById('adminPasswordInput');
+  const gameStateMsg = document.getElementById('gameStateMsg');
+  const teamsList = document.getElementById('teamsList');
+
+  function setStatus(text){ statusCard.innerHTML = text; }
+
+  async function api(url, options={}){
+    const res = await fetch(url, {
+      headers: { 'Content-Type': 'application/json' },
+      ...options
+    });
+    const data = await res.json().catch(() => ({}));
+    if(!res.ok) throw new Error(data.error || 'Errore di comunicazione');
+    return data;
+  }
+
+  function humanState(team, game){
+    if(game.status === 'ended' && team.winner) return 'Vincitore';
+    if(game.status === 'ended') return 'Partita conclusa';
+    if(team.status === 'waiting') return 'In attesa';
+    if(team.status === 'playing') return 'In gioco';
+    if(team.status === 'paused') return 'Sospesa';
+    if(team.status === 'completed') return 'Completato';
+    return team.status;
+  }
+
+  function parsePlayers(text){
+    return (text || '').split(',').map(v => v.trim()).filter(Boolean).slice(0, 4);
+  }
+
+  async function loadBootstrap(){
+    bootstrap = await api('/api/bootstrap');
+    profileSelect.innerHTML = bootstrap.profiles.map(p => `<option value="${p.id}">${p.label}</option>`).join('');
+    renderAdminSummary(bootstrap.state);
+    currentCode.textContent = currentTeamId || '—';
+
+    if(currentTeamId){
+      try{
+        await loadCurrentTeam();
+      }catch(err){
+        currentTeamId = null;
+        currentTeamPayload = null;
+        localStorage.removeItem('tesori_current_team_v31');
+        currentCode.textContent = '—';
+        playerGame.classList.add('hidden');
+      }
+    }
+
+    setStatus(`<b>${bootstrap.config.gameTitle}</b> · V3.1 pronta. Urbano = codici. Extraurbano = freccia + distanza + sblocco a ${bootstrap.config.geoFocusMeters} metri.`);
+  }
+
+  async function createTeam(){
+    try{
+      const players = parsePlayers(playersInput.value);
+      const payload = await api('/api/teams', {
+        method:'POST',
+        body: JSON.stringify({
+          teamName: teamNameInput.value.trim(),
+          captain: captainInput.value.trim(),
+          players,
+          profileId: profileSelect.value
+        })
+      });
+      currentTeamId = payload.team.id;
+      localStorage.setItem('tesori_current_team_v31', currentTeamId);
+      currentCode.textContent = currentTeamId;
+      teamNameInput.value = '';
+      captainInput.value = '';
+      playersInput.value = '';
+      await loadBootstrap();
+      alert('Squadra creata: ' + currentTeamId);
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
+  async function joinTeam(){
+    const id = joinCodeInput.value.trim().toUpperCase();
+    if(!id) return alert('Inserisci un codice squadra.');
+    currentTeamId = id;
+    localStorage.setItem('tesori_current_team_v31', currentTeamId);
+    currentCode.textContent = currentTeamId;
+    await loadCurrentTeam().catch(err => alert(err.message));
+  }
+
+  async function loadCurrentTeam(){
+    if(!currentTeamId){
+      playerGame.classList.add('hidden');
+      return;
+    }
+    currentTeamPayload = await api('/api/teams/' + encodeURIComponent(currentTeamId));
+    renderPlayer(currentTeamPayload);
+    await loadAdminMonitorIfOpen();
+  }
+
+  function renderPlayer(payload){
+    const { team, game, profile } = payload;
+    playerGame.classList.remove('hidden');
+    pillTeam.textContent = 'Squadra: ' + team.teamName;
+    pillProfile.textContent = 'Profilo: ' + profile.label;
+    pillState.textContent = 'Stato: ' + humanState(team, game);
+
+    waitBox.classList.add('hidden');
+    pausedBox.classList.add('hidden');
+    endedBox.classList.add('hidden');
+    errorBox.classList.add('hidden');
+    clueBox.classList.add('hidden');
+    urbanBox.classList.add('hidden');
+    geoBox.classList.add('hidden');
+    completeBox.classList.add('hidden');
+
+    if(team.lastError){
+      errorBox.textContent = team.lastError;
+      errorBox.classList.remove('hidden');
+    }
+
+    if(game.status === 'waiting'){
+      waitBox.classList.remove('hidden');
+      return;
+    }
+
+    if(game.status === 'ended'){
+      endedBox.textContent = team.winner ? 'La partita si è chiusa e la vostra squadra è risultata vincitrice.' : 'La partita è terminata. Grazie per aver partecipato.';
+      endedBox.classList.remove('hidden');
+      return;
+    }
+
+    if(team.status === 'paused'){
+      pausedBox.classList.remove('hidden');
+      return;
+    }
+
+    if(team.status === 'completed'){
+      completeBox.classList.remove('hidden');
+      return;
+    }
+
+    const clue = profile.clues[team.clueIndex];
+    if(!clue) return;
+
+    clueBox.classList.remove('hidden');
+    clueNumber.textContent = 'Indizio ' + (team.clueIndex + 1) + ' di ' + profile.clues.length;
+    clueTitle.textContent = clue.title;
+    clueText.textContent = clue.text;
+
+    if(profile.mode === 'urbano'){
+      urbanBox.classList.remove('hidden');
+    } else {
+      geoBox.classList.remove('hidden');
+      geoTargetLabel.textContent = clue.title;
+      updateGeoUI(clue);
+    }
+  }
+
+  function normalizeAngle(deg){
+    return ((deg % 360) + 360) % 360;
+  }
+
+  function shortestAngleDelta(from, to){
+    return ((to - from + 540) % 360) - 180;
+  }
+
+  function smoothAngle(current, target, factor = 0.28){
+    if(current === null || Number.isNaN(current)) return normalizeAngle(target);
+    const delta = shortestAngleDelta(current, target);
+    return normalizeAngle(current + delta * factor);
+  }
+
+  function getScreenAngle(){
+    if(window.screen?.orientation?.angle != null) return window.screen.orientation.angle;
+    if(typeof window.orientation === 'number') return window.orientation;
+    return 0;
+  }
+
+  function extractCompassHeading(evt){
+    if(typeof evt.webkitCompassHeading === 'number' && !Number.isNaN(evt.webkitCompassHeading)){
+      return normalizeAngle(evt.webkitCompassHeading);
+    }
+    if(typeof evt.alpha === 'number' && !Number.isNaN(evt.alpha)){
+      return normalizeAngle(360 - evt.alpha + getScreenAngle());
+    }
+    return null;
+  }
+
+  function updateGeoUI(clue){
+    if(!lastPosition){
+      distanceValue.textContent = '— m';
+      arrow.style.transform = 'rotate(0deg)';
+      return;
+    }
+
+    const dist = Math.round(distanceMeters(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng));
+    distanceValue.textContent = dist + ' m';
+
+    const bearing = bearingDegrees(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng);
+    const heading = typeof compassHeading === 'number' ? compassHeading : 0;
+    const targetRelative = normalizeAngle(bearing - heading);
+
+    const factor = dist <= 12 ? 0.22 : dist <= 25 ? 0.42 : 0.62;
+    smoothedHeading = smoothAngle(smoothedHeading, targetRelative, factor);
+    arrow.style.transform = `rotate(${smoothedHeading}deg)`;
+  }
+
+  function distanceMeters(lat1, lon1, lat2, lon2){
+    const R = 6371000;
+    const toRad = d => d * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat/2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2) ** 2;
+    return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
+  function bearingDegrees(lat1, lon1, lat2, lon2){
+    const toRad = d => d * Math.PI / 180;
+    const toDeg = r => r * 180 / Math.PI;
+    const y = Math.sin(toRad(lon2-lon1)) * Math.cos(toRad(lat2));
+    const x = Math.cos(toRad(lat1))*Math.sin(toRad(lat2)) - Math.sin(toRad(lat1))*Math.cos(toRad(lat2))*Math.cos(toRad(lon2-lon1));
+    return (toDeg(Math.atan2(y, x)) + 360) % 360;
+  }
+
+  async function verifyCode(){
+    if(!currentTeamPayload) return;
+    try{
+      await api(`/api/teams/${encodeURIComponent(currentTeamPayload.team.id)}/verify-code`, {
+        method:'POST',
+        body: JSON.stringify({ answer: codeInput.value })
+      });
+      codeInput.value = '';
+      await loadCurrentTeam();
+    }catch(err){
+      alert(err.message);
+      await loadCurrentTeam();
+    }
+  }
+
+  async function geoCheckNow(){
+    if(!currentTeamPayload || !lastPosition) return alert('Geolocalizzazione non ancora disponibile.');
+    try{
+      await api(`/api/teams/${encodeURIComponent(currentTeamPayload.team.id)}/geo-check`, {
+        method:'POST',
+        body: JSON.stringify({ lat: lastPosition.lat, lng: lastPosition.lng })
+      });
+      await loadCurrentTeam();
+    }catch(err){
+      await loadCurrentTeam();
+    }
+  }
+
+  async function enableCompassIfNeeded(){
+    if(!window.DeviceOrientationEvent || compassStarted) return;
+    compassStarted = true;
+
+    if(typeof DeviceOrientationEvent.requestPermission === 'function'){
+      try{
+        const response = await DeviceOrientationEvent.requestPermission();
+        if(response !== 'granted'){
+          alert('Permesso bussola non concesso. La freccia userà solo il GPS e sarà meno precisa.');
+          return;
+        }
+      }catch(err){
+        alert('Permesso bussola non disponibile: ' + err.message);
+        return;
+      }
+    }
+
+    const handleOrientation = evt => {
+      const rawHeading = extractCompassHeading(evt);
+      if(rawHeading === null) return;
+
+      const factor = 0.72;
+      compassHeading = smoothAngle(compassHeading, rawHeading, factor);
+
+      if(currentTeamPayload?.profile?.mode === 'extraurbano'){
+        const clue = currentTeamPayload.profile.clues[currentTeamPayload.team.clueIndex];
+        if(clue) updateGeoUI(clue);
+      }
+    };
+
+    window.addEventListener('deviceorientationabsolute', handleOrientation, true);
+    window.addEventListener('deviceorientation', handleOrientation, true);
+  }
+
+  async function startGeoWatch(){
+    if(!navigator.geolocation) return alert('Geolocalizzazione non supportata dal dispositivo.');
+
+    await enableCompassIfNeeded();
+
+    if(geoWatchId !== null){
+      navigator.geolocation.clearWatch(geoWatchId);
+    }
+
+    geoWatchId = navigator.geolocation.watchPosition(async pos => {
+      const incoming = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+
+      if(!lastPosition){
+        lastPosition = incoming;
+      } else {
+        lastPosition = {
+          lat: lastPosition.lat * 0.35 + incoming.lat * 0.65,
+          lng: lastPosition.lng * 0.35 + incoming.lng * 0.65
+        };
+      }
+
+      if(
+        typeof pos.coords.heading === 'number' &&
+        !Number.isNaN(pos.coords.heading) &&
+        typeof pos.coords.speed === 'number' &&
+        pos.coords.speed > 1.5
+      ){
+        compassHeading = smoothAngle(compassHeading, normalizeAngle(pos.coords.heading), 0.35);
+      }
+
+      if(currentTeamPayload && currentTeamPayload.profile && currentTeamPayload.profile.mode === 'extraurbano'){
+        const clue = currentTeamPayload.profile.clues[currentTeamPayload.team.clueIndex];
+        if(clue){
+          updateGeoUI(clue);
+          const dist = distanceMeters(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng);
+          const now = Date.now();
+          if(dist <= 10 && now - lastGeoCheckAt > 1400){
+            lastGeoCheckAt = now;
+            await geoCheckNow();
+          }
+        }
+      }
+    }, err => {
+      alert('Geolocalizzazione non disponibile: ' + err.message);
+    }, {
+      enableHighAccuracy:true,
+      maximumAge:0,
+      timeout:4000
+    });
+  }
+
+  function renderAdminSummary(state){
+    if(!adminUnlocked){
+      adminLoginBox.classList.remove('hidden');
+      adminPanel.classList.add('hidden');
+      return;
+    }
+
+    adminLoginBox.classList.add('hidden');
+    adminPanel.classList.remove('hidden');
+
+    if(state.game.status === 'waiting') gameStateMsg.textContent = 'Partita in attesa.';
+    if(state.game.status === 'started') gameStateMsg.textContent = 'Partita avviata. Progressione automatica attiva.';
+    if(state.game.status === 'ended' && state.game.winnerTeamId){
+      const winner = state.teams.find(t => t.id === state.game.winnerTeamId);
+      gameStateMsg.textContent = 'Partita conclusa. Vincitore: ' + (winner ? winner.teamName : state.game.winnerTeamId);
+    } else if(state.game.status === 'ended') {
+      gameStateMsg.textContent = 'Partita conclusa.';
+    }
+
+    teamsList.innerHTML = '';
+    if(!state.teams.length){
+      teamsList.innerHTML = '<div class="muted">Nessuna squadra registrata.</div>';
+      return;
+    }
+
+    state.teams.forEach(team => {
+      const profile = bootstrap?.profiles?.find(p => p.id === team.profileId);
+      const div = document.createElement('div');
+      div.className = 'team-item';
+      div.innerHTML = `
+        <div class="row">
+          <div>
+            <h4 style="margin:.1rem 0 .25rem;">${team.teamName}</h4>
+            <div class="mono small muted">${team.id}</div>
+          </div>
+          <div style="flex:1"></div>
+          <span class="pill">${humanState(team, state.game)}</span>
+        </div>
+        <div class="small muted">Capitano: ${team.captain} · Giocatori: ${team.players.join(', ')}</div>
+        <div class="small muted">Profilo: ${profile ? profile.label : team.profileId}</div>
+        <div class="small muted">Progressione: ${team.clueIndex} / ${profile ? profile.clueCount : '?'}</div>
+        ${team.completedAt ? `<div class="small">Completata alle: <b>${new Date(team.completedAt).toLocaleTimeString()}</b></div>` : ''}
+        ${team.lastError ? `<div class="msg bad">${team.lastError}</div>` : ''}
+        <div class="row" style="margin-top:10px;">
+          ${(team.status === 'waiting' || team.status === 'playing') ? `<button class="warn" onclick="pauseSingleTeam('${team.id}')">Sospendi</button>` : ''}
+          ${team.status === 'paused' ? `<button class="secondary" onclick="resumeSingleTeam('${team.id}')">Riattiva</button>` : ''}
+          ${team.status === 'paused' ? `<button class="danger" onclick="deleteSingleTeam('${team.id}')">Cancella squadra</button>` : ''}
+          ${team.status === 'completed' ? `<button class="secondary" onclick="resetSingleTeam('${team.id}')">Reset squadra</button>` : ''}
+        </div>
+      `;
+      teamsList.appendChild(div);
+    });
+  }
+
+  async function loadAdminMonitorIfOpen(){
+    if(!adminUnlocked) return;
+    const state = await api('/api/admin/monitor');
+    renderAdminSummary(state);
+  }
+
+  async function startGame(){
+    await api('/api/admin/start', { method:'POST' });
+    await loadBootstrap();
+  }
+
+  async function endGame(){
+    await api('/api/admin/end', { method:'POST' });
+    await loadBootstrap();
+  }
+
+  async function resetGame(){
+    if(!confirm('Vuoi eliminare solo le squadre concluse?')) return;
+
+    await api('/api/admin/reset', { method:'POST' });
+    await loadBootstrap();
+
+    if(currentTeamId){
+      try{
+        await loadCurrentTeam();
+      }catch(e){}
+    }
+  }
+
+  async function resetSingleTeam(teamId){
+    if(!confirm(`Vuoi eliminare la squadra conclusa ${teamId}?`)) return;
+
+    try{
+      await api('/api/admin/reset-team/' + encodeURIComponent(teamId), { method:'POST' });
+
+      if(currentTeamId === teamId){
+        currentTeamId = null;
+        currentTeamPayload = null;
+        localStorage.removeItem('tesori_current_team_v31');
+        currentCode.textContent = '—';
+        playerGame.classList.add('hidden');
+      }
+
+      await loadBootstrap();
+      await loadAdminMonitorIfOpen();
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
+  async function pauseSingleTeam(teamId){
+    if(!confirm(`Vuoi sospendere la squadra ${teamId}?`)) return;
+
+    try{
+      await api('/api/admin/pause-team/' + encodeURIComponent(teamId), { method:'POST' });
+      await loadBootstrap();
+      await loadAdminMonitorIfOpen();
+      if(currentTeamId === teamId){
+        try { await loadCurrentTeam(); } catch(e){}
+      }
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
+  async function resumeSingleTeam(teamId){
+    if(!confirm(`Vuoi riattivare la squadra ${teamId}?`)) return;
+
+    try{
+      await api('/api/admin/resume-team/' + encodeURIComponent(teamId), { method:'POST' });
+      await loadBootstrap();
+      await loadAdminMonitorIfOpen();
+      if(currentTeamId === teamId){
+        try { await loadCurrentTeam(); } catch(e){}
+      }
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
+  async function deleteSingleTeam(teamId){
+    if(!confirm(`Vuoi cancellare definitivamente la squadra sospesa ${teamId}?`)) return;
+
+    try{
+      await api('/api/admin/delete-team/' + encodeURIComponent(teamId), { method:'POST' });
+
+      if(currentTeamId === teamId){
+        currentTeamId = null;
+        currentTeamPayload = null;
+        localStorage.removeItem('tesori_current_team_v31');
+        currentCode.textContent = '—';
+        playerGame.classList.add('hidden');
+      }
+
+      await loadBootstrap();
+      await loadAdminMonitorIfOpen();
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
+  function loginAdmin(){
+    if(!bootstrap) return;
+    if(adminPasswordInput.value !== bootstrap.config.adminPassword) return alert('Password non corretta.');
+    adminUnlocked = true;
+    renderAdminSummary(bootstrap.state);
+  }
+
+  function logoutAdmin(){
+    adminUnlocked = false;
+    renderAdminSummary(bootstrap ? bootstrap.state : { game:{status:'waiting'}, teams:[] });
+  }
+
+  document.getElementById('playerTabBtn').addEventListener('click', ()=>{ playerView.classList.remove('hidden'); adminView.classList.add('hidden'); });
+  document.getElementById('adminTabBtn').addEventListener('click', ()=>{ adminView.classList.remove('hidden'); playerView.classList.add('hidden'); });
+  document.getElementById('createTeamBtn').addEventListener('click', createTeam);
+  document.getElementById('joinTeamBtn').addEventListener('click', joinTeam);
+  document.getElementById('verifyCodeBtn').addEventListener('click', verifyCode);
+  document.getElementById('refreshTeamBtn').addEventListener('click', loadCurrentTeam);
+  document.getElementById('geoStartBtn').addEventListener('click', startGeoWatch);
+  document.getElementById('geoCheckBtn').addEventListener('click', geoCheckNow);
+  document.getElementById('adminLoginBtn').addEventListener('click', loginAdmin);
+  document.getElementById('adminLogoutBtn').addEventListener('click', logoutAdmin);
+  document.getElementById('startGameBtn').addEventListener('click', startGame);
+  document.getElementById('endGameBtn').addEventListener('click', endGame);
+  document.getElementById('resetGameBtn').addEventListener('click', resetGame);
+  document.getElementById('refreshAdminBtn').addEventListener('click', loadAdminMonitorIfOpen);
+
+  setInterval(async () => {
+    if(currentTeamId) {
+      try { await loadCurrentTeam(); } catch(e){}
+    }
+    if(adminUnlocked) {
+      try { await loadAdminMonitorIfOpen(); } catch(e){}
+    }
+  }, 3000);
+
+  loadBootstrap().catch(err => {
+    setStatus('Errore di avvio: ' + err.message);
+  });
+</script>
 </body>
 </html>
