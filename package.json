@@ -1,0 +1,12 @@
+{
+  "name": "tesori-della-tuscia-v3-1",
+  "version": "3.1.0",
+  "description": "Tesori della Tuscia V3.1 - urbano a codici, extraurbano con freccia e distanza",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

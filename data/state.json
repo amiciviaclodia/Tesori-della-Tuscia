@@ -1,0 +1,44 @@
+{
+  "game": {
+    "status": "started",
+    "startedAt": 1775377598565,
+    "endedAt": null,
+    "winnerTeamId": null
+  },
+  "teams": [
+    {
+      "id": "TEAM-WS2XE4",
+      "teamName": "SerenaPasqua26",
+      "captain": "Serena",
+      "playersCount": 1,
+      "players": [
+        "Serena"
+      ],
+      "profileId": "oriolo_extraurbano",
+      "clueIndex": 0,
+      "status": "playing",
+      "createdAt": 1775377153260,
+      "startedAt": 1775377598565,
+      "completedAt": null,
+      "winner": false,
+      "lastError": null
+    },
+    {
+      "id": "TEAM-277DF3",
+      "teamName": "PasquaSerena26",
+      "captain": "Serena",
+      "playersCount": 1,
+      "players": [
+        "Serena"
+      ],
+      "profileId": "oriolo_extraurbano",
+      "clueIndex": 0,
+      "status": "playing",
+      "createdAt": 1775377522437,
+      "startedAt": 1775377598565,
+      "completedAt": null,
+      "winner": false,
+      "lastError": null
+    }
+  ]
+}
