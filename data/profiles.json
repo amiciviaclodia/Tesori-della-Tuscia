@@ -52,31 +52,31 @@
       "mode": "extraurbano",
       "clues": [
         {
-          "title": "Verso il GOL che non c'è più",
-          "text": "Segui la freccia e avvicinati al punto. Quando entrerai nel raggio di 5m metri, il gioco avanzerà da solo.",
-          "lat": 42.183495,
-          "lng": 12.132236,
+          "title": "Dove riposano alcuni amici pelosi",
+          "text": "Segui la freccia e avvicinati piano al punto. Quando entrerai nel raggio di 5m metri, il gioco avanzerà da solo.",
+          "lat": 42.183158,
+          "lng": 12.132165,
           "radius": 5
         },
         {
-          "title": "Dove crescono le Mazze di Tamburo",
+          "title": "Dove crescevano le Mazze di Tamburo",
           "text": "Prosegui verso il secondo punto. Mantieni la direzione e riduci la distanza.",
-          "lat": 42.183287,
+          "lat": 42.183036,
           "lng": 12.132629,
-          "radius": 3
+          "radius": 5
         },
         {
-          "title": "Dove ti accolgono gli Amici della Via Clodia",
+          "title": "Dove crescono le fragole più belle",
           "text": "Ancora pochi passi. Quando il valore scenderà sotto i 10 metri, l’indizio sarà completato.",
-          "lat": 42.184072,
-          "lng": 12.132736,
-          "radius": 3
+          "lat": 42.183519,
+          "lng": 12.132419,
+          "radius": 5
         },
         {
-          "title": "Tesoro finale",
+          "title": "Tesoro finale dove tutto, a volte, si muove",
           "text": "Raggiungi il punto conclusivo. Il primo team che lo centra chiude il proprio percorso.",
-          "lat": 42.183713,
-          "lng": 12.132801,
+          "lat": 42.183602,
+          "lng": 12.133037,
           "radius": 3
         }
       ]
