@@ -132,31 +132,31 @@
       "clues": [
         {
           "title": "Prima soglia",
-          "text": "Segui la freccia del territorio.",
-          "lat": 42.2052,
-          "lng": 12.0991,
-          "radius": 10
+          "text": "Non costruiamo muri ma ponti, e non solo.",
+          "lat": 42.177929,
+          "lng": 12.083311,
+          "radius": 5
         },
         {
           "title": "Secondo punto",
-          "text": "Riduci la distanza al nuovo obiettivo.",
-          "lat": 42.2046,
-          "lng": 12.1003,
-          "radius": 10
+          "text": "Lassù qualcuno ci ama, e prega per noi.",
+          "lat": 42.179424,
+          "lng": 12.081401,
+          "radius": 15
         },
         {
           "title": "Terza tappa",
-          "text": "Ancora pochi metri.",
-          "lat": 42.2039,
-          "lng": 12.1017,
+          "text": "Per l'eternità.",
+          "lat": 42.180863,
+          "lng": 12.077614,
           "radius": 10
         },
         {
           "title": "Tesoro finale",
-          "text": "Ultimo punto extraurbano.",
-          "lat": 42.203,
-          "lng": 12.103,
-          "radius": 10
+          "text": "Un uovo speciale, siamo vicini",
+          "lat": 42.179960,
+          "lng": 12.078486,
+          "radius": 15
         }
       ]
     },
