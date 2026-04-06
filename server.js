@@ -5,18 +5,38 @@ const path = require('path');
 
 const app = express();
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
 
-const CONFIG = JSON.parse(fs.readFileSync(path.join(__dirname,'config.json')));
-const PROFILES = JSON.parse(fs.readFileSync(path.join(__dirname,'profiles.json'))).profiles;
+// 👉 SERVE FILE STATICI (fondamentale!)
+app.use(express.static(__dirname));
 
-function loadState(){
-  return JSON.parse(fs.readFileSync(path.join(__dirname,'state.json')));
+// -------- PATH SICURI --------
+const CONFIG_PATH = path.join(__dirname, 'config.json');
+const PROFILES_PATH = path.join(__dirname, 'profiles.json');
+const STATE_PATH = path.join(__dirname, 'state.json');
+
+// -------- LETTURA SICURA --------
+function readJSON(filePath, fallback = null){
+  try {
+    return JSON.parse(fs.readFileSync(filePath));
+  } catch (e){
+    console.error("Errore lettura:", filePath, e.message);
+    return fallback;
+  }
 }
-function saveState(s){
-  fs.writeFileSync(path.join(__dirname,'state.json'), JSON.stringify(s,null,2));
+
+function writeJSON(filePath, data){
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
 
+// -------- INIT --------
+let CONFIG = readJSON(CONFIG_PATH);
+let PROFILES = readJSON(PROFILES_PATH)?.profiles || [];
+let STATE = readJSON(STATE_PATH, {
+  game: { status: "waiting", startedAt: null, endedAt: null },
+  teams: []
+});
+
+// -------- UTILS --------
 function shuffleArray(arr){
   const a = [...arr];
   for(let i = a.length - 1; i > 0; i--){
@@ -30,23 +50,25 @@ function genId(){
   return 'TEAM-' + Math.random().toString(36).substring(2,8).toUpperCase();
 }
 
-function getProfile(id){
-  return PROFILES.find(p => p.id === id);
+function saveState(){
+  writeJSON(STATE_PATH, STATE);
 }
 
+// -------- API --------
+
 app.get('/api/bootstrap', (req,res)=>{
-  const state = loadState();
-  res.json({ config: CONFIG, profiles: PROFILES, state });
+  res.json({ config: CONFIG, profiles: PROFILES, state: STATE });
 });
 
 app.post('/api/teams', (req,res)=>{
-  const state = loadState();
-  if(state.teams.length >= CONFIG.maxTeams){
-    return res.status(400).json({ error: 'Numero massimo di squadre raggiunto' });
-  }
   const { teamName, captain, players, profileId } = req.body;
-  const profile = getProfile(profileId);
-  if(!profile) return res.status(400).json({ error: 'Profilo non valido' });
+
+  if(STATE.teams.length >= CONFIG.maxTeams){
+    return res.status(400).json({ error: "Max squadre raggiunto" });
+  }
+
+  const profile = PROFILES.find(p => p.id === profileId);
+  if(!profile) return res.status(400).json({ error: "Profilo non valido" });
 
   const sequence = shuffleArray([...Array(profile.clues.length).keys()]);
 
@@ -54,112 +76,100 @@ app.post('/api/teams', (req,res)=>{
     id: genId(),
     teamName,
     captain,
-    players: players || [],
+    players,
     profileId,
-    sequence,            // V4.0
+    sequence,
     clueIndex: 0,
-    status: 'waiting',
+    status: "waiting",
     createdAt: Date.now()
   };
 
-  state.teams.push(team);
-  saveState(state);
+  STATE.teams.push(team);
+  saveState();
+
   res.json({ team });
 });
 
 app.get('/api/teams/:id', (req,res)=>{
-  const state = loadState();
-  const team = state.teams.find(t => t.id === req.params.id);
-  if(!team) return res.status(404).json({ error: 'Team non trovato' });
-  const profile = getProfile(team.profileId);
+  const team = STATE.teams.find(t => t.id === req.params.id);
+  if(!team) return res.status(404).json({ error: "Team non trovato" });
 
-  const realIndex = team.sequence ? team.sequence[team.clueIndex] : team.clueIndex;
+  const profile = PROFILES.find(p => p.id === team.profileId);
+
+  const realIndex = team.sequence[team.clueIndex];
   const clue = profile.clues[realIndex];
 
-  res.json({ team, profile, game: state.game, clue });
+  res.json({ team, profile, clue, game: STATE.game });
 });
 
 app.post('/api/teams/:id/verify-code', (req,res)=>{
-  const state = loadState();
-  const team = state.teams.find(t => t.id === req.params.id);
-  if(!team) return res.status(404).json({ error: 'Team non trovato' });
-  const profile = getProfile(team.profileId);
+  const team = STATE.teams.find(t => t.id === req.params.id);
+  if(!team) return res.status(404).json({ error: "Team non trovato" });
 
-  const realIndex = team.sequence ? team.sequence[team.clueIndex] : team.clueIndex;
+  const profile = PROFILES.find(p => p.id === team.profileId);
+
+  const realIndex = team.sequence[team.clueIndex];
   const clue = profile.clues[realIndex];
 
-  const ans = (req.body.answer || '').toLowerCase().trim();
-  const ok = (clue.solution && (ans === clue.solution || (clue.solutionAliases||[]).includes(ans)));
+  const answer = (req.body.answer || '').toLowerCase();
 
-  if(ok){
+  if(answer === clue.solution || (clue.solutionAliases || []).includes(answer)){
     team.clueIndex++;
     team.lastError = null;
   } else {
-    team.lastError = 'Risposta non corretta';
+    team.lastError = "Risposta errata";
   }
 
   if(team.clueIndex >= profile.clues.length){
-    team.status = 'completed';
-    team.completedAt = Date.now();
-  } else if(state.game.status === 'started'){
-    team.status = 'playing';
+    team.status = "completed";
+  } else if(STATE.game.status === "started"){
+    team.status = "playing";
   }
 
-  saveState(state);
-  res.json({ ok });
+  saveState();
+  res.json({ ok: true });
 });
 
+// -------- ADMIN --------
+
 app.post('/api/admin/start', (req,res)=>{
-  const state = loadState();
-  state.game.status = 'started';
-  state.game.startedAt = Date.now();
-  state.teams.forEach(t => { if(t.status === 'waiting') t.status = 'playing'; });
-  saveState(state);
+  STATE.game.status = "started";
+  STATE.game.startedAt = Date.now();
+  STATE.teams.forEach(t => {
+    if(t.status === "waiting") t.status = "playing";
+  });
+  saveState();
   res.json({ ok:true });
 });
 
 app.post('/api/admin/end', (req,res)=>{
-  const state = loadState();
-  state.game.status = 'ended';
-  state.game.endedAt = Date.now();
-  saveState(state);
-  res.json({ ok:true });
-});
-
-app.post('/api/admin/pause-team/:id', (req,res)=>{
-  const state = loadState();
-  const team = state.teams.find(t => t.id === req.params.id);
-  if(!team) return res.status(404).json({ error: 'Team non trovato' });
-  team.status = 'paused';
-  saveState(state);
-  res.json({ ok:true });
-});
-
-app.post('/api/admin/resume-team/:id', (req,res)=>{
-  const state = loadState();
-  const team = state.teams.find(t => t.id === req.params.id);
-  if(!team) return res.status(404).json({ error: 'Team non trovato' });
-  team.status = 'playing';
-  saveState(state);
+  STATE.game.status = "ended";
+  STATE.game.endedAt = Date.now();
+  saveState();
   res.json({ ok:true });
 });
 
 app.post('/api/admin/delete-team/:id', (req,res)=>{
-  const state = loadState();
-  const team = state.teams.find(t => t.id === req.params.id);
-  if(!team) return res.status(404).json({ error: 'Team non trovato' });
+  const team = STATE.teams.find(t => t.id === req.params.id);
+  if(!team) return res.status(404).json({ error: "Team non trovato" });
 
-  if(team.status === 'playing'){
-    return res.status(400).json({ error: 'Non puoi cancellare una squadra in gioco' });
-  }
-  if(state.game.status !== 'ended' && !['paused','completed'].includes(team.status)){
-    return res.status(400).json({ error: 'Puoi cancellare solo squadre sospese, completate o a partita chiusa' });
+  if(team.status === "playing"){
+    return res.status(400).json({ error: "Non puoi cancellare una squadra in gioco" });
   }
 
-  state.teams = state.teams.filter(t => t.id !== req.params.id);
-  saveState(state);
+  if(STATE.game.status !== "ended" && !["paused","completed"].includes(team.status)){
+    return res.status(400).json({ error: "Cancellazione non consentita" });
+  }
+
+  STATE.teams = STATE.teams.filter(t => t.id !== req.params.id);
+  saveState();
+
   res.json({ ok:true });
 });
 
+// -------- START --------
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, ()=> console.log('Server V4.0 attivo su porta', PORT));
+app.listen(PORT, () => {
+  console.log("Server attivo su porta", PORT);
+});
