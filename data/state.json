@@ -1,9 +1,11 @@
 {
   "game": {
-    "status": "waiting",
-    "startedAt": null,
+    "status": "started",
+    "startedAt": 1775377598565,
     "endedAt": null,
     "winnerTeamId": null
   },
-  "teams": []
+  "teams": [
+   
+  ]
 }
