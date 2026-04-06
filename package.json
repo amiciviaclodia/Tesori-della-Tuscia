@@ -1,7 +1,7 @@
 {
-  "name": "tesori-della-tuscia-v3-1",
-  "version": "3.1.0",
-  "description": "Tesori della Tuscia V3.1 - urbano a codici, extraurbano con freccia e distanza",
+  "name": "tesori-della-tuscia-v4-0",
+  "version": "4.0.0",
+  "description": "Tesori della Tuscia V4.0 - sequenze random per squadra + regole cancellazione",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
