@@ -279,13 +279,13 @@
       }catch(err){
         currentTeamId = null;
         currentTeamPayload = null;
-        localStorage.removeItem('tesori_current_team_v31');
+        localStorage.removeItem('tesori_current_team_v40');
         currentCode.textContent = '—';
         playerGame.classList.add('hidden');
       }
     }
 
-    setStatus(`<b>${bootstrap.config.gameTitle}</b> · V3.1 pronta. Urbano = codici. Extraurbano = freccia + distanza + sblocco a ${bootstrap.config.geoFocusMeters} metri.`);
+    setStatus(`<b>${bootstrap.config.gameTitle}</b> · V4.0 Urbano = codici. Extraurbano = freccia + distanza);
   }
 
   async function createTeam(){
