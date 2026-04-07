@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 app.use(express.json());
@@ -8,12 +9,12 @@ app.use(express.json());
    SERVE FRONTEND
 ========================= */
 
-// file statici (index.html incluso)
-app.use(express.static(__dirname));
+const publicPath = path.join(__dirname);
 
-// root
+app.use(express.static(publicPath));
+
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(publicPath, 'index.html'));
 });
 
 /* =========================
@@ -33,34 +34,33 @@ const config = {
 ========================= */
 
 let game = {
-  status: "waiting", // waiting | started | ended
+  status: "waiting",
   winnerTeamId: null
 };
 
 let teams = {};
 
 /* =========================
-   PROFILI (USA I TUOI REALI)
+   CARICAMENTO PROFILI
 ========================= */
 
-const profiles = [
-  {
-    id: "urbano",
-    label: "Urbano",
-    mode: "urbano",
-    clues: [
-      { title: "Indizio 1", text: "Trova la parola", answer: "altieri" }
-    ]
-  },
-  {
-    id: "extraurbano",
-    label: "Extraurbano",
-    mode: "extraurbano",
-    clues: [
-      { title: "Punto 1", text: "Raggiungi il punto", lat: 42.1, lng: 12.1 }
-    ]
+let profiles = [];
+
+function loadProfiles() {
+  try {
+    const raw = fs.readFileSync(path.join(__dirname, 'profiles.json'));
+    const json = JSON.parse(raw);
+
+    profiles = json.profiles || [];
+
+    console.log("Profili caricati:", profiles.length);
+  } catch (err) {
+    console.error("Errore caricamento profiles.json:", err.message);
+    profiles = [];
   }
-];
+}
+
+loadProfiles();
 
 /* =========================
    UTILS
@@ -112,7 +112,7 @@ app.get('/api/bootstrap', (req, res) => {
 });
 
 /* =========================
-   TEAM CREATE
+   CREATE TEAM
 ========================= */
 
 app.post('/api/teams', (req, res) => {
@@ -147,12 +147,7 @@ app.get('/api/teams/:id', (req, res) => {
     res.json({
       team,
       game,
-      profile: {
-        id: profile.id,
-        label: profile.label,
-        mode: profile.mode,
-        clues: profile.clues
-      }
+      profile
     });
   } catch (e) {
     res.status(404).json({ error: e.message });
@@ -177,7 +172,11 @@ app.post('/api/teams/:id/verify-code', (req, res) => {
 
     const answer = (req.body.answer || "").toLowerCase().trim();
 
-    if (answer === clue.answer) {
+    const valid =
+      answer === clue.solution ||
+      (clue.solutionAliases || []).map(a => a.toLowerCase()).includes(answer);
+
+    if (valid) {
       team.clueIndex++;
 
       if (team.clueIndex >= profile.clues.length) {
@@ -202,7 +201,7 @@ app.post('/api/teams/:id/verify-code', (req, res) => {
 });
 
 /* =========================
-   GEO CHECK
+   GEO CHECK (EXTRAURBANO)
 ========================= */
 
 app.post('/api/teams/:id/geo-check', (req, res) => {
@@ -224,7 +223,9 @@ app.post('/api/teams/:id/geo-check', (req, res) => {
       clue.lng
     );
 
-    if (dist <= config.geoFocusMeters) {
+    const radius = clue.radius || config.geoFocusMeters;
+
+    if (dist <= radius) {
       team.clueIndex++;
 
       if (team.clueIndex >= profile.clues.length) {
