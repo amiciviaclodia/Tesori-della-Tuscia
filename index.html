@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tesori della Tuscia · V3.1</title>
+  <style>
+    :root{
+      --bg:#f3efe6; --paper:#fcfaf5; --ink:#2d2a26; --muted:#6d675f; --line:#d8d1c5;
+      --green:#355845; --green-soft:#e5eee8; --accent:#8f7f61; --warn:#8a6a2f; --bad:#7b3b31;
+      --shadow:0 10px 30px rgba(0,0,0,.06); --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,serif;line-height:1.5}
+    header{padding:28px 18px 22px;background:linear-gradient(180deg,#3a5b48,#355845);color:#fff;box-shadow:var(--shadow)}
+    header .eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;opacity:.85}
+    header h1{margin:.2rem 0;font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.08}
+    header p{margin:.35rem 0 0;max-width:900px;color:#ecf3ef}
+    main{max-width:1180px;margin:0 auto;padding:18px}
+    .toolbar,.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .layout{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+    @media (max-width:960px){.layout{grid-template-columns:1fr}}
+    .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+    .card h2,.card h3{margin:.1rem 0 .7rem;line-height:1.2}
+    .muted{color:var(--muted)} .small{font-size:.93rem} .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+    .hidden{display:none!important}
+    button,input,select{font:inherit}
+    button{border:none;cursor:pointer;border-radius:999px;padding:12px 18px;background:var(--green);color:#fff;box-shadow:var(--shadow)}
+    button.secondary{background:#fff;color:var(--green);border:1px solid var(--green)}
+    button.warn{background:var(--warn)}
+    button.danger{background:var(--bad)}
+    button:disabled{opacity:.45;cursor:not-allowed}
+    input,select{width:100%;padding:11px 13px;border-radius:14px;border:1px solid var(--line);background:#fff;color:var(--ink)}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width:700px){.grid-2{grid-template-columns:1fr}}
+    .field{margin-bottom:12px} .field label{display:block;font-size:.95rem;margin-bottom:5px;color:var(--muted)}
+    .divider{height:1px;background:var(--line);margin:14px 0}
+    .pills{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+    .pill{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:.9rem}
+    .msg{padding:12px 14px;border-radius:14px;margin-top:12px;font-size:.96rem}
+    .msg.ok{background:var(--green-soft);color:#234134}
+    .msg.warn{background:#f6efdc;color:#6b531e}
+    .msg.bad{background:#f4e2de;color:#6a2f27}
+    .clue{background:linear-gradient(180deg,#fff,#f8f4ec);border:1px solid #e5ddcf;border-radius:20px;padding:18px}
+    .clue .n{color:var(--accent);text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;margin-bottom:8px}
+    .clue h3{font-size:1.5rem;margin:.1rem 0 .35rem}
+    .hero-geo{padding:18px;border-radius:20px;background:linear-gradient(180deg,#fff,#eef5f0);border:1px solid #d8e5dd}
+    .arrowWrap{display:flex;justify-content:center;align-items:center;padding:10px 0 8px}
+    .arrow{
+      width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;
+      border-bottom:30px solid var(--green);transform-origin:50% 76%;transition:transform .06s linear;
+      filter:drop-shadow(0 2px 4px rgba(0,0,0,.12));
+    }
+    .distance{font-size:2rem;font-weight:bold;text-align:center}
+    .team-list{display:grid;gap:10px}
+    .team-item{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}
+    .section-title{margin:.15rem 0 .7rem;font-size:1.2rem}
+  </style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">Tesori della Tuscia · V3.1</div>
+  <h1>Gioco completo con urbano a codici ed extraurbano a geolocalizzazione</h1>
+  <p>Le squadre urbane avanzano inserendo parole chiave. Le squadre extraurbane seguono freccia e distanza, con sblocco automatico entro 10 metri dal punto. L’amministratore avvia, osserva e chiude: non è più il motore del gioco.</p>
+</header>
+
+<main>
+  <div class="toolbar">
+    <button id="playerTabBtn">Modalità squadra</button>
+    <button id="adminTabBtn" class="secondary">Modalità amministratore</button>
+  </div>
+
+  <div id="statusCard" class="card small">Caricamento del gioco…</div>
+
+  <div class="layout">
+    <section id="playerView" class="card">
+      <h2>Squadra</h2>
+      <p class="muted">Una squadra, un capitano, un solo obiettivo per volta. Il gioco cambia comportamento in base al profilo scelto.</p>
+
+      <div class="grid-2">
+        <div>
+          <div class="field">
+            <label>Nome squadra</label>
+            <input id="teamNameInput" placeholder="Es. Falchi di Tufo" />
+          </div>
+          <div class="field">
+            <label>Nome capitano</label>
+            <input id="captainInput" placeholder="Es. Paolo" />
+          </div>
+          <div class="field">
+            <label>Giocatori (1-4, separati da virgola)</label>
+            <input id="playersInput" placeholder="Paolo, Luca, Sara" />
+          </div>
+        </div>
+        <div>
+          <div class="field">
+            <label>Profilo di gioco</label>
+            <select id="profileSelect"></select>
+          </div>
+          <div class="field">
+            <label>Codice squadra esistente</label>
+            <input id="joinCodeInput" class="mono" placeholder="TEAM-AB12CD" />
+          </div>
+          <div class="row">
+            <button id="createTeamBtn">Crea squadra</button>
+            <button id="joinTeamBtn" class="secondary">Entra con codice</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="row">
+        <div>
+          <div class="muted small">Codice squadra attivo</div>
+          <div id="currentCode" class="mono">—</div>
+        </div>
+        <div style="flex:1"></div>
+        <button id="refreshTeamBtn" class="secondary">Aggiorna</button>
+      </div>
+
+      <div id="playerGame" class="hidden">
+        <div class="pills">
+          <span class="pill" id="pillTeam">Squadra: -</span>
+          <span class="pill" id="pillProfile">Profilo: -</span>
+          <span class="pill" id="pillState">Stato: -</span>
+        </div>
+
+        <div id="waitBox" class="msg warn hidden">La squadra è registrata. Attende l’avvio del gioco.</div>
+        <div id="pausedBox" class="msg warn hidden">La squadra è momentaneamente sospesa dall’amministratore.</div>
+        <div id="endedBox" class="msg ok hidden"></div>
+        <div id="errorBox" class="msg bad hidden"></div>
+
+        <div id="clueBox" class="clue hidden">
+          <div class="n" id="clueNumber">Indizio</div>
+          <h3 id="clueTitle">—</h3>
+          <p id="clueText">—</p>
+        </div>
+
+        <div id="urbanBox" class="card hidden" style="margin-top:12px;padding:14px;">
+          <div class="small muted">Inserisci la parola chiave trovata sul posto o dedotta correttamente.</div>
+          <div class="field" style="margin-top:10px;">
+            <label>Parola chiave</label>
+            <input id="codeInput" placeholder="Es. altieri" />
+          </div>
+          <button id="verifyCodeBtn">Verifica codice</button>
+        </div>
+
+        <div id="geoBox" class="hero-geo hidden" style="margin-top:12px;">
+          <div class="small muted">Supporto di orientamento minimo, in stile Narrazione: solo freccia e distanza. Il passaggio si sblocca automaticamente a 10 metri.</div>
+          <div class="arrowWrap">
+            <div id="arrow" class="arrow"></div>
+          </div>
+          <div class="distance" id="distanceValue">— m</div>
+          <div class="small muted" style="text-align:center;margin-top:6px;">Punto attivo: <span id="geoTargetLabel">—</span></div>
+          <div class="row" style="justify-content:center;margin-top:12px;">
+            <button id="geoStartBtn">Attiva geolocalizzazione</button>
+            <button id="geoCheckBtn" class="secondary">Controlla adesso</button>
+          </div>
+        </div>
+
+        <div id="completeBox" class="msg ok hidden">Percorso completato. Attendi la chiusura o il verdetto finale.</div>
+      </div>
+    </section>
+
+    <section id="adminView" class="card hidden">
+      <h2>Amministratore</h2>
+      <p class="muted">Qui si gestisce solo la regia generale. La progressione del gioco è automatica.</p>
+
+      <div id="adminLoginBox">
+        <div class="field">
+          <label>Password amministratore</label>
+          <input id="adminPasswordInput" type="password" placeholder="1234" />
+        </div>
+        <button id="adminLoginBtn">Entra</button>
+      </div>
+
+      <div id="adminPanel" class="hidden">
+        <div class="row" style="margin-bottom:12px;">
+          <button id="startGameBtn">Avvia partita</button>
+          <button id="endGameBtn" class="danger">Chiudi partita</button>
+          <button id="resetGameBtn" class="secondary">Pulisci concluse</button>
+          <div style="flex:1"></div>
+          <button id="refreshAdminBtn" class="secondary">Aggiorna</button>
+          <button id="adminLogoutBtn" class="secondary">Esci</button>
+        </div>
+
+        <div id="gameStateMsg" class="msg warn">Partita in attesa.</div>
+        <h3 class="section-title">Monitor squadre</h3>
+        <div id="teamsList" class="team-list"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+  let bootstrap = null;
+  let currentTeamId = localStorage.getItem('tesori_current_team_v31') || null;
+  let adminUnlocked = false;
+  let currentTeamPayload = null;
+  let compassHeading = null;
+  let smoothedHeading = null;
+  let geoWatchId = null;
+  let lastPosition = null;
+  let compassStarted = false;
+  let lastGeoCheckAt = 0;
+
+  const statusCard = document.getElementById('statusCard');
+  const playerView = document.getElementById('playerView');
+  const adminView = document.getElementById('adminView');
+  const profileSelect = document.getElementById('profileSelect');
+  const teamNameInput = document.getElementById('teamNameInput');
+  const captainInput = document.getElementById('captainInput');
+  const playersInput = document.getElementById('playersInput');
+  const joinCodeInput = document.getElementById('joinCodeInput');
+  const currentCode = document.getElementById('currentCode');
+
+  const playerGame = document.getElementById('playerGame');
+  const pillTeam = document.getElementById('pillTeam');
+  const pillProfile = document.getElementById('pillProfile');
+  const pillState = document.getElementById('pillState');
+  const waitBox = document.getElementById('waitBox');
+  const pausedBox = document.getElementById('pausedBox');
+  const endedBox = document.getElementById('endedBox');
+  const errorBox = document.getElementById('errorBox');
+  const clueBox = document.getElementById('clueBox');
+  const clueNumber = document.getElementById('clueNumber');
+  const clueTitle = document.getElementById('clueTitle');
+  const clueText = document.getElementById('clueText');
+  const urbanBox = document.getElementById('urbanBox');
+  const geoBox = document.getElementById('geoBox');
+  const codeInput = document.getElementById('codeInput');
+  const arrow = document.getElementById('arrow');
+  const distanceValue = document.getElementById('distanceValue');
+  const geoTargetLabel = document.getElementById('geoTargetLabel');
+  const completeBox = document.getElementById('completeBox');
+
+  const adminLoginBox = document.getElementById('adminLoginBox');
+  const adminPanel = document.getElementById('adminPanel');
+  const adminPasswordInput = document.getElementById('adminPasswordInput');
+  const gameStateMsg = document.getElementById('gameStateMsg');
+  const teamsList = document.getElementById('teamsList');
+
+  function setStatus(text){ statusCard.innerHTML = text; }
+
+  async function api(url, options={}){
+    const res = await fetch(url, {
+      headers: { 'Content-Type': 'application/json' },
+      ...options
+    });
+    const data = await res.json().catch(() => ({}));
+    if(!res.ok) throw new Error(data.error || 'Errore di comunicazione');
+    return data;
+  }
+
+  function humanState(team, game){
+    if(game.status === 'ended' && team.winner) return 'Vincitore';
+    if(game.status === 'ended') return 'Partita conclusa';
+    if(team.status === 'waiting') return 'In attesa';
+    if(team.status === 'playing') return 'In gioco';
+    if(team.status === 'paused') return 'Sospesa';
+    if(team.status === 'completed') return 'Completato';
+    return team.status;
+  }
+
+  function parsePlayers(text){
+    return (text || '').split(',').map(v => v.trim()).filter(Boolean).slice(0, 4);
+  }
+
+  async function loadBootstrap(){
+    bootstrap = await api('/api/bootstrap');
+    profileSelect.innerHTML = bootstrap.profiles.map(p => `<option value="${p.id}">${p.label}</option>`).join('');
+    renderAdminSummary(bootstrap.state);
+    currentCode.textContent = currentTeamId || '—';
+
+    if(currentTeamId){
+      try{
+        await loadCurrentTeam();
+      }catch(err){
+        currentTeamId = null;
+        currentTeamPayload = null;
+        localStorage.removeItem('tesori_current_team_v31');
+        currentCode.textContent = '—';
+        playerGame.classList.add('hidden');
+      }
+    }
+
+    setStatus(`<b>${bootstrap.config.gameTitle}</b> · V3.1 pronta. Urbano = codici. Extraurbano = freccia + distanza + sblocco a ${bootstrap.config.geoFocusMeters} metri.`);
+  }
+
+  async function createTeam(){
+    try{
+      const players = parsePlayers(playersInput.value);
+      const payload = await api('/api/teams', {
+        method:'POST',
+        body: JSON.stringify({
+          teamName: teamNameInput.value.trim(),
+          captain: captainInput.value.trim(),
+          players,
+          profileId: profileSelect.value
+        })
+      });
+      currentTeamId = payload.team.id;
+      localStorage.setItem('tesori_current_team_v31', currentTeamId);
+      currentCode.textContent = currentTeamId;
+      teamNameInput.value = '';
+      captainInput.value = '';
+      playersInput.value = '';
+      await loadBootstrap();
+      alert('Squadra creata: ' + currentTeamId);
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
+  async function joinTeam(){
+    const id = joinCodeInput.value.trim().toUpperCase();
+    if(!id) return alert('Inserisci un codice squadra.');
+    currentTeamId = id;
+    localStorage.setItem('tesori_current_team_v31', currentTeamId);
+    currentCode.textContent = currentTeamId;
+    await loadCurrentTeam().catch(err => alert(err.message));
+  }
+
+  async function loadCurrentTeam(){
+    if(!currentTeamId){
+      playerGame.classList.add('hidden');
+      return;
+    }
+    currentTeamPayload = await api('/api/teams/' + encodeURIComponent(currentTeamId));
+    renderPlayer(currentTeamPayload);
+    await loadAdminMonitorIfOpen();
+  }
+
+  function renderPlayer(payload){
+    const { team, game, profile } = payload;
+    playerGame.classList.remove('hidden');
+    pillTeam.textContent = 'Squadra: ' + team.teamName;
+    pillProfile.textContent = 'Profilo: ' + profile.label;
+    pillState.textContent = 'Stato: ' + humanState(team, game);
+
+    waitBox.classList.add('hidden');
+    pausedBox.classList.add('hidden');
+    endedBox.classList.add('hidden');
+    errorBox.classList.add('hidden');
+    clueBox.classList.add('hidden');
+    urbanBox.classList.add('hidden');
+    geoBox.classList.add('hidden');
+    completeBox.classList.add('hidden');
+
+    if(team.lastError){
+      errorBox.textContent = team.lastError;
+      errorBox.classList.remove('hidden');
+    }
+
+    if(game.status === 'waiting'){
+      waitBox.classList.remove('hidden');
+      return;
+    }
+
+    if(game.status === 'ended'){
+      endedBox.textContent = team.winner ? 'La partita si è chiusa e la vostra squadra è risultata vincitrice.' : 'La partita è terminata. Grazie per aver partecipato.';
+      endedBox.classList.remove('hidden');
+      return;
+    }
+
+    if(team.status === 'paused'){
+      pausedBox.classList.remove('hidden');
+      return;
+    }
+
+    if(team.status === 'completed'){
+      completeBox.classList.remove('hidden');
+      return;
+    }
+
+    const clue = profile.clues[team.clueIndex];
+    if(!clue) return;
+
+    clueBox.classList.remove('hidden');
+    clueNumber.textContent = 'Indizio ' + (team.clueIndex + 1) + ' di ' + profile.clues.length;
+    clueTitle.textContent = clue.title;
+    clueText.textContent = clue.text;
+
+    if(profile.mode === 'urbano'){
+      urbanBox.classList.remove('hidden');
+    } else {
+      geoBox.classList.remove('hidden');
+      geoTargetLabel.textContent = clue.title;
+      updateGeoUI(clue);
+    }
+  }
+
+  function normalizeAngle(deg){
+    return ((deg % 360) + 360) % 360;
+  }
+
+  function shortestAngleDelta(from, to){
+    return ((to - from + 540) % 360) - 180;
+  }
+
+  function smoothAngle(current, target, factor = 0.28){
+    if(current === null || Number.isNaN(current)) return normalizeAngle(target);
+    const delta = shortestAngleDelta(current, target);
+    return normalizeAngle(current + delta * factor);
+  }
+
+  function getScreenAngle(){
+    if(window.screen?.orientation?.angle != null) return window.screen.orientation.angle;
+    if(typeof window.orientation === 'number') return window.orientation;
+    return 0;
+  }
+
+  function extractCompassHeading(evt){
+    if(typeof evt.webkitCompassHeading === 'number' && !Number.isNaN(evt.webkitCompassHeading)){
+      return normalizeAngle(evt.webkitCompassHeading);
+    }
+    if(typeof evt.alpha === 'number' && !Number.isNaN(evt.alpha)){
+      return normalizeAngle(360 - evt.alpha + getScreenAngle());
+    }
+    return null;
+  }
+
+  function updateGeoUI(clue){
+    if(!lastPosition){
+      distanceValue.textContent = '— m';
+      arrow.style.transform = 'rotate(0deg)';
+      return;
+    }
+
+    const dist = Math.round(distanceMeters(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng));
+    distanceValue.textContent = dist + ' m';
+
+    const bearing = bearingDegrees(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng);
+    const heading = typeof compassHeading === 'number' ? compassHeading : 0;
+    const targetRelative = normalizeAngle(bearing - heading);
+
+    const factor = dist <= 12 ? 0.22 : dist <= 25 ? 0.42 : 0.62;
+    smoothedHeading = smoothAngle(smoothedHeading, targetRelative, factor);
+    arrow.style.transform = `rotate(${smoothedHeading}deg)`;
+  }
+
+  function distanceMeters(lat1, lon1, lat2, lon2){
+    const R = 6371000;
+    const toRad = d => d * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat/2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2) ** 2;
+    return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
+  function bearingDegrees(lat1, lon1, lat2, lon2){
+    const toRad = d => d * Math.PI / 180;
+    const toDeg = r => r * 180 / Math.PI;
+    const y = Math.sin(toRad(lon2-lon1)) * Math.cos(toRad(lat2));
+    const x = Math.cos(toRad(lat1))*Math.sin(toRad(lat2)) - Math.sin(toRad(lat1))*Math.cos(toRad(lat2))*Math.cos(toRad(lon2-lon1));
+    return (toDeg(Math.atan2(y, x)) + 360) % 360;
+  }
+
+  async function verifyCode(){
+    if(!currentTeamPayload) return;
+    try{
+      await api(`/api/teams/${encodeURIComponent(currentTeamPayload.team.id)}/verify-code`, {
+        method:'POST',
+        body: JSON.stringify({ answer: codeInput.value })
+      });
+      codeInput.value = '';
+      await loadCurrentTeam();
+    }catch(err){
+      alert(err.message);
+      await loadCurrentTeam();
+    }
+  }
+
+  async function geoCheckNow(){
+    if(!currentTeamPayload || !lastPosition) return alert('Geolocalizzazione non ancora disponibile.');
+    try{
+      await api(`/api/teams/${encodeURIComponent(currentTeamPayload.team.id)}/geo-check`, {
+        method:'POST',
+        body: JSON.stringify({ lat: lastPosition.lat, lng: lastPosition.lng })
+      });
+      await loadCurrentTeam();
+    }catch(err){
+      await loadCurrentTeam();
+    }
+  }
+
+  async function enableCompassIfNeeded(){
+    if(!window.DeviceOrientationEvent || compassStarted) return;
+    compassStarted = true;
+
+    if(typeof DeviceOrientationEvent.requestPermission === 'function'){
+      try{
+        const response = await DeviceOrientationEvent.requestPermission();
+        if(response !== 'granted'){
+          alert('Permesso bussola non concesso. La freccia userà solo il GPS e sarà meno precisa.');
+          return;
+        }
+      }catch(err){
+        alert('Permesso bussola non disponibile: ' + err.message);
+        return;
+      }
+    }
+
+    const handleOrientation = evt => {
+      const rawHeading = extractCompassHeading(evt);
+      if(rawHeading === null) return;
+
+      const factor = 0.72;
+      compassHeading = smoothAngle(compassHeading, rawHeading, factor);
+
+      if(currentTeamPayload?.profile?.mode === 'extraurbano'){
+        const clue = currentTeamPayload.profile.clues[currentTeamPayload.team.clueIndex];
+        if(clue) updateGeoUI(clue);
+      }
+    };
+
+    window.addEventListener('deviceorientationabsolute', handleOrientation, true);
+    window.addEventListener('deviceorientation', handleOrientation, true);
+  }
+
+  async function startGeoWatch(){
+    if(!navigator.geolocation) return alert('Geolocalizzazione non supportata dal dispositivo.');
+
+    await enableCompassIfNeeded();
+
+    if(geoWatchId !== null){
+      navigator.geolocation.clearWatch(geoWatchId);
+    }
+
+    geoWatchId = navigator.geolocation.watchPosition(async pos => {
+      const incoming = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+
+      if(!lastPosition){
+        lastPosition = incoming;
+      } else {
+        lastPosition = {
+          lat: lastPosition.lat * 0.35 + incoming.lat * 0.65,
+          lng: lastPosition.lng * 0.35 + incoming.lng * 0.65
+        };
+      }
+
+      if(
+        typeof pos.coords.heading === 'number' &&
+        !Number.isNaN(pos.coords.heading) &&
+        typeof pos.coords.speed === 'number' &&
+        pos.coords.speed > 1.5
+      ){
+        compassHeading = smoothAngle(compassHeading, normalizeAngle(pos.coords.heading), 0.35);
+      }
+
+      if(currentTeamPayload && currentTeamPayload.profile && currentTeamPayload.profile.mode === 'extraurbano'){
+        const clue = currentTeamPayload.profile.clues[currentTeamPayload.team.clueIndex];
+        if(clue){
+          updateGeoUI(clue);
+          const dist = distanceMeters(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng);
+          const now = Date.now();
+          if(dist <= 10 && now - lastGeoCheckAt > 1400){
+            lastGeoCheckAt = now;
+            await geoCheckNow();
+          }
+        }
+      }
+    }, err => {
+      alert('Geolocalizzazione non disponibile: ' + err.message);
+    }, {
+      enableHighAccuracy:true,
+      maximumAge:0,
+      timeout:4000
+    });
+  }
+
+  function renderAdminSummary(state){
+    if(!adminUnlocked){
+      adminLoginBox.classList.remove('hidden');
+      adminPanel.classList.add('hidden');
+      return;
+    }
+
+    adminLoginBox.classList.add('hidden');
+    adminPanel.classList.remove('hidden');
+
+    if(state.game.status === 'waiting') gameStateMsg.textContent = 'Partita in attesa.';
+    if(state.game.status === 'started') gameStateMsg.textContent = 'Partita avviata. Progressione automatica attiva.';
+    if(state.game.status === 'ended' && state.game.winnerTeamId){
+      const winner = state.teams.find(t => t.id === state.game.winnerTeamId);
+      gameStateMsg.textContent = 'Partita conclusa. Vincitore: ' + (winner ? winner.teamName : state.game.winnerTeamId);
+    } else if(state.game.status === 'ended') {
+      gameStateMsg.textContent = 'Partita conclusa.';
+    }
+
+    teamsList.innerHTML = '';
+    if(!state.teams.length){
+      teamsList.innerHTML = '<div class="muted">Nessuna squadra registrata.</div>';
+      return;
+    }
+
+    state.teams.forEach(team => {
+      const profile = bootstrap?.profiles?.find(p => p.id === team.profileId);
+      const div = document.createElement('div');
+      div.className = 'team-item';
+      div.innerHTML = `
+        <div class="row">
+          <div>
+            <h4 style="margin:.1rem 0 .25rem;">${team.teamName}</h4>
+            <div class="mono small muted">${team.id}</div>
+          </div>
+          <div style="flex:1"></div>
+          <span class="pill">${humanState(team, state.game)}</span>
+        </div>
+        <div class="small muted">Capitano: ${team.captain} · Giocatori: ${team.players.join(', ')}</div>
+        <div class="small muted">Profilo: ${profile ? profile.label : team.profileId}</div>
+        <div class="small muted">Progressione: ${team.clueIndex} / ${profile ? profile.clueCount : '?'}</div>
+        ${team.completedAt ? `<div class="small">Completata alle: <b>${new Date(team.completedAt).toLocaleTimeString()}</b></div>` : ''}
+        ${team.lastError ? `<div class="msg bad">${team.lastError}</div>` : ''}
+        <div class="row" style="margin-top:10px;">
+          ${(team.status === 'waiting' || team.status === 'playing') ? `<button class="warn" onclick="pauseSingleTeam('${team.id}')">Sospendi</button>` : ''}
+          ${team.status === 'paused' ? `<button class="secondary" onclick="resumeSingleTeam('${team.id}')">Riattiva</button>` : ''}
+          ${team.status === 'paused' ? `<button class="danger" onclick="deleteSingleTeam('${team.id}')">Cancella squadra</button>` : ''}
+          ${team.status === 'completed' ? `<button class="secondary" onclick="resetSingleTeam('${team.id}')">Reset squadra</button>` : ''}
+        </div>
+      `;
+      teamsList.appendChild(div);
+    });
+  }
+
+  async function loadAdminMonitorIfOpen(){
+    if(!adminUnlocked) return;
+    const state = await api('/api/admin/monitor');
+    renderAdminSummary(state);
+  }
+
+  async function startGame(){
+    await api('/api/admin/start', { method:'POST' });
+    await loadBootstrap();
+  }
+
+  async function endGame(){
+    await api('/api/admin/end', { method:'POST' });
+    await loadBootstrap();
+  }
+
+  async function resetGame(){
+    if(!confirm('Vuoi eliminare solo le squadre concluse?')) return;
+
+    await api('/api/admin/reset', { method:'POST' });
+    await loadBootstrap();
+
+    if(currentTeamId){
+      try{
+        await loadCurrentTeam();
+      }catch(e){}
+    }
+  }
+
+  async function resetSingleTeam(teamId){
+    if(!confirm(`Vuoi eliminare la squadra conclusa ${teamId}?`)) return;
+
+    try{
+      await api('/api/admin/reset-team/' + encodeURIComponent(teamId), { method:'POST' });
+
+      if(currentTeamId === teamId){
+        currentTeamId = null;
+        currentTeamPayload = null;
+        localStorage.removeItem('tesori_current_team_v31');
+        currentCode.textContent = '—';
+        playerGame.classList.add('hidden');
+      }
+
+      await loadBootstrap();
+      await loadAdminMonitorIfOpen();
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
+  async function pauseSingleTeam(teamId){
+    if(!confirm(`Vuoi sospendere la squadra ${teamId}?`)) return;
+
+    try{
+      await api('/api/admin/pause-team/' + encodeURIComponent(teamId), { method:'POST' });
+      await loadBootstrap();
+      await loadAdminMonitorIfOpen();
+      if(currentTeamId === teamId){
+        try { await loadCurrentTeam(); } catch(e){}
+      }
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
+  async function resumeSingleTeam(teamId){
+    if(!confirm(`Vuoi riattivare la squadra ${teamId}?`)) return;
+
+    try{
+      await api('/api/admin/resume-team/' + encodeURIComponent(teamId), { method:'POST' });
+      await loadBootstrap();
+      await loadAdminMonitorIfOpen();
+      if(currentTeamId === teamId){
+        try { await loadCurrentTeam(); } catch(e){}
+      }
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
+  async function deleteSingleTeam(teamId){
+    if(!confirm(`Vuoi cancellare definitivamente la squadra sospesa ${teamId}?`)) return;
+
+    try{
+      await api('/api/admin/delete-team/' + encodeURIComponent(teamId), { method:'POST' });
+
+      if(currentTeamId === teamId){
+        currentTeamId = null;
+        currentTeamPayload = null;
+        localStorage.removeItem('tesori_current_team_v31');
+        currentCode.textContent = '—';
+        playerGame.classList.add('hidden');
+      }
+
+      await loadBootstrap();
+      await loadAdminMonitorIfOpen();
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
+  function loginAdmin(){
+    if(!bootstrap) return;
+    if(adminPasswordInput.value !== bootstrap.config.adminPassword) return alert('Password non corretta.');
+    adminUnlocked = true;
+    renderAdminSummary(bootstrap.state);
+  }
+
+  function logoutAdmin(){
+    adminUnlocked = false;
+    renderAdminSummary(bootstrap ? bootstrap.state : { game:{status:'waiting'}, teams:[] });
+  }
+
+  document.getElementById('playerTabBtn').addEventListener('click', ()=>{ playerView.classList.remove('hidden'); adminView.classList.add('hidden'); });
+  document.getElementById('adminTabBtn').addEventListener('click', ()=>{ adminView.classList.remove('hidden'); playerView.classList.add('hidden'); });
+  document.getElementById('createTeamBtn').addEventListener('click', createTeam);
+  document.getElementById('joinTeamBtn').addEventListener('click', joinTeam);
+  document.getElementById('verifyCodeBtn').addEventListener('click', verifyCode);
+  document.getElementById('refreshTeamBtn').addEventListener('click', loadCurrentTeam);
+  document.getElementById('geoStartBtn').addEventListener('click', startGeoWatch);
+  document.getElementById('geoCheckBtn').addEventListener('click', geoCheckNow);
+  document.getElementById('adminLoginBtn').addEventListener('click', loginAdmin);
+  document.getElementById('adminLogoutBtn').addEventListener('click', logoutAdmin);
+  document.getElementById('startGameBtn').addEventListener('click', startGame);
+  document.getElementById('endGameBtn').addEventListener('click', endGame);
+  document.getElementById('resetGameBtn').addEventListener('click', resetGame);
+  document.getElementById('refreshAdminBtn').addEventListener('click', loadAdminMonitorIfOpen);
+
+  setInterval(async () => {
+    if(currentTeamId) {
+      try { await loadCurrentTeam(); } catch(e){}
+    }
+    if(adminUnlocked) {
+      try { await loadAdminMonitorIfOpen(); } catch(e){}
+    }
+  }, 3000);
+
+  loadBootstrap().catch(err => {
+    setStatus('Errore di avvio: ' + err.message);
+  });
+</script>
+</body>
+</html>
