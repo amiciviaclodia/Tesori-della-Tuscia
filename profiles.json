@@ -56,7 +56,7 @@
           "text": "Segui la freccia e avvicinati piano al punto. Quando entrerai nel raggio di 5m metri, il gioco avanzerà da solo.",
           "lat": 42.183158,
           "lng": 12.132165,
-          "radius": 3
+          "radius": 5
         },
         {
           "title": "Dove crescevano le Mazze di Tamburo",
@@ -70,7 +70,7 @@
           "text": "Ancora pochi passi. Quando il valore scenderà sotto i 10 metri, l’indizio sarà completato.",
           "lat": 42.183778,
           "lng": 12.132419,
-          "radius": 3
+          "radius": 5
         },
         {
           "title": "Tesoro finale dove tutto, a volte, si muove",
@@ -135,14 +135,14 @@
           "text": "Non costruiamo muri ma ponti, e non solo.",
           "lat": 42.177929,
           "lng": 12.083311,
-          "radius": 5
+          "radius": 10
         },
         {
           "title": "Secondo punto",
           "text": "Lassù qualcuno ci ama, e prega per noi.",
           "lat": 42.179424,
           "lng": 12.081401,
-          "radius": 15
+          "radius": 10
         },
         {
           "title": "Terza tappa",
@@ -156,7 +156,7 @@
           "text": "Un uovo speciale, siamo vicini",
           "lat": 42.179960,
           "lng": 12.078486,
-          "radius": 15
+          "radius": 10
         }
       ]
     },
