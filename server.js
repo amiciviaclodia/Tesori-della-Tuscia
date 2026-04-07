@@ -1,12 +1,26 @@
 const express = require('express');
+const path = require('path');
+
 const app = express();
 app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
+/* =========================
+   SERVE FRONTEND
+========================= */
+
+// file statici (index.html incluso)
+app.use(express.static(__dirname));
+
+// root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 /* =========================
    CONFIG
 ========================= */
+
+const PORT = process.env.PORT || 3000;
 
 const config = {
   adminPassword: "1234",
@@ -26,8 +40,7 @@ let game = {
 let teams = {};
 
 /* =========================
-   PROFILI (SEMPLIFICATI)
-   👉 usa i tuoi reali qui
+   PROFILI (USA I TUOI REALI)
 ========================= */
 
 const profiles = [
@@ -112,7 +125,7 @@ app.post('/api/teams', (req, res) => {
     players: req.body.players || [],
     profileId: req.body.profileId,
 
-    status: "waiting", // waiting | playing | paused | completed | closed
+    status: "waiting",
     clueIndex: 0,
     completedAt: null,
     winner: false,
@@ -147,7 +160,7 @@ app.get('/api/teams/:id', (req, res) => {
 });
 
 /* =========================
-   VERIFICA CODICE (URBANO)
+   VERIFY CODE (URBANO)
 ========================= */
 
 app.post('/api/teams/:id/verify-code', (req, res) => {
@@ -189,7 +202,7 @@ app.post('/api/teams/:id/verify-code', (req, res) => {
 });
 
 /* =========================
-   GEO CHECK (EXTRAURBANO)
+   GEO CHECK
 ========================= */
 
 app.post('/api/teams/:id/geo-check', (req, res) => {
@@ -260,7 +273,7 @@ app.post('/api/admin/end', (req, res) => {
 
   Object.values(teams).forEach(t => {
     if (t.status === "playing" || t.status === "paused") {
-      t.status = "closed"; // 🔴 fondamentale
+      t.status = "closed";
     }
   });
 
