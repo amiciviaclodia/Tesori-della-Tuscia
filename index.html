@@ -126,6 +126,10 @@
           <span class="pill" id="pillState">Stato: -</span>
         </div>
 
+        <div class="row" style="margin-top:10px;">
+          <button id="whatsappBtn" class="secondary">Contatta amministratore</button>
+        </div>
+
         <div id="waitBox" class="msg warn hidden">La squadra è registrata. Attende l’avvio del gioco.</div>
         <div id="pausedBox" class="msg warn hidden">La squadra è momentaneamente sospesa dall’amministratore.</div>
         <div id="endedBox" class="msg ok hidden"></div>
@@ -234,6 +238,7 @@
   const distanceValue = document.getElementById('distanceValue');
   const geoTargetLabel = document.getElementById('geoTargetLabel');
   const completeBox = document.getElementById('completeBox');
+  const whatsappBtn = document.getElementById('whatsappBtn');
 
   const adminLoginBox = document.getElementById('adminLoginBox');
   const adminPanel = document.getElementById('adminPanel');
@@ -483,6 +488,19 @@
     }catch(err){
       await loadCurrentTeam();
     }
+  }
+
+  function contactAdminWhatsapp(){
+    if(!currentTeamPayload || !currentTeamPayload.team){
+      return alert('Nessuna squadra attiva.');
+    }
+
+    const teamName = currentTeamPayload.team.teamName || 'Squadra senza nome';
+    const phone = '393519167433';
+    const message = encodeURIComponent(`Qui squadra "${teamName}" 🧭 Siamo nel vivo dei Tesori della Tuscia e abbiamo bisogno di aiuto per proseguire nel gioco.`);
+
+    const url = `https://wa.me/${phone}?text=${message}`;
+    window.open(url, '_blank');
   }
 
   async function enableCompassIfNeeded(){
@@ -745,6 +763,7 @@
   document.getElementById('refreshTeamBtn').addEventListener('click', loadCurrentTeam);
   document.getElementById('geoStartBtn').addEventListener('click', startGeoWatch);
   document.getElementById('geoCheckBtn').addEventListener('click', geoCheckNow);
+  document.getElementById('whatsappBtn').addEventListener('click', contactAdminWhatsapp);
   document.getElementById('adminLoginBtn').addEventListener('click', loginAdmin);
   document.getElementById('adminLogoutBtn').addEventListener('click', logoutAdmin);
   document.getElementById('startGameBtn').addEventListener('click', startGame);
