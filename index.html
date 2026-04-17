@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tesori della Tuscia · V3.1</title>
+  <title>Tesori della Tuscia · V4.1</title>
   <style>
     :root{
       --bg:#f3efe6; --paper:#fcfaf5; --ink:#2d2a26; --muted:#6d675f; --line:#d8d1c5;
@@ -59,7 +59,7 @@
 </head>
 <body>
 <header>
-  <div class="eyebrow">Tesori della Tuscia · V4.0</div>
+  <div class="eyebrow">Tesori della Tuscia · V4.1</div>
   <h1>Gioco urbano a codici ed extraurbano a geolocalizzazione</h1>
   <p>Le squadre urbane avanzano inserendo parole chiave. Le squadre extraurbane seguono freccia e distanza, con sblocco automatico arrivati al punto.</p>
 </header>
@@ -75,7 +75,7 @@
   <div class="layout">
     <section id="playerView" class="card">
       <h2>Squadra</h2>
-      <p class="muted">Una squadra, un capitano, un solo obiettivo per volta. Il gioco cambia comportamento in base al profilo scelto.</p>
+      <p class="muted">Una squadra, un capitano, un solo obiettivo per volta. Il gioco cambia comportamento in base al profilo scelto e, se previsto dal server, in base al percorso assegnato alla singola squadra.</p>
 
       <div class="grid-2">
         <div>
@@ -123,6 +123,7 @@
         <div class="pills">
           <span class="pill" id="pillTeam">Squadra: -</span>
           <span class="pill" id="pillProfile">Profilo: -</span>
+          <span class="pill" id="pillRoute">Percorso: -</span>
           <span class="pill" id="pillState">Stato: -</span>
         </div>
 
@@ -222,6 +223,7 @@
   const playerGame = document.getElementById('playerGame');
   const pillTeam = document.getElementById('pillTeam');
   const pillProfile = document.getElementById('pillProfile');
+  const pillRoute = document.getElementById('pillRoute');
   const pillState = document.getElementById('pillState');
   const waitBox = document.getElementById('waitBox');
   const pausedBox = document.getElementById('pausedBox');
@@ -272,6 +274,61 @@
     return (text || '').split(',').map(v => v.trim()).filter(Boolean).slice(0, 4);
   }
 
+  function safeArray(value){
+    return Array.isArray(value) ? value : [];
+  }
+
+  function getRouteClues(payload){
+    if(!payload) return [];
+
+    const candidates = [
+      payload.team?.routeClues,
+      payload.team?.assignedClues,
+      payload.team?.clues,
+      payload.team?.route?.clues,
+      payload.routeClues,
+      payload.assignedClues,
+      payload.route?.clues,
+      payload.profile?.routeClues,
+      payload.profile?.clues
+    ];
+
+    for(const item of candidates){
+      if(Array.isArray(item) && item.length) return item;
+    }
+
+    return [];
+  }
+
+  function getRouteLabel(payload){
+    return payload?.team?.routeLabel
+      || payload?.team?.routeName
+      || payload?.team?.route?.label
+      || payload?.team?.route?.name
+      || payload?.route?.label
+      || payload?.route?.name
+      || payload?.profile?.routeLabel
+      || payload?.profile?.label
+      || 'Percorso standard';
+  }
+
+  function getClueCountFromTeamState(team, profile){
+    if(typeof team?.routeClueCount === 'number') return team.routeClueCount;
+    if(Array.isArray(team?.routeClues)) return team.routeClues.length;
+    if(Array.isArray(team?.assignedClues)) return team.assignedClues.length;
+    if(Array.isArray(team?.clues)) return team.clues.length;
+    if(Array.isArray(team?.route?.clues)) return team.route.clues.length;
+    if(typeof profile?.clueCount === 'number') return profile.clueCount;
+    if(Array.isArray(profile?.clues)) return profile.clues.length;
+    return '?';
+  }
+
+  function getCurrentClue(payload){
+    const clues = getRouteClues(payload);
+    const clueIndex = Number(payload?.team?.clueIndex || 0);
+    return clues[clueIndex] || null;
+  }
+
   async function loadBootstrap(){
     bootstrap = await api('/api/bootstrap');
     profileSelect.innerHTML = bootstrap.profiles.map(p => `<option value="${p.id}">${p.label}</option>`).join('');
@@ -290,7 +347,7 @@
       }
     }
 
-    setStatus(`<b>${bootstrap.config.gameTitle}</b> · V4.0 Urbano = codici. Extraurbano = freccia + distanza + sblocco a ${bootstrap.config.geoFocusMeters} metri.`);
+    setStatus(`<b>${bootstrap.config.gameTitle}</b> · V4.1. Supporto a percorsi differenziati per singola squadra, anche dentro la stessa partita. Urbano = codici. Extraurbano = freccia + distanza + sblocco a ${bootstrap.config.geoFocusMeters} metri.`);
   }
 
   async function createTeam(){
@@ -339,9 +396,13 @@
 
   function renderPlayer(payload){
     const { team, game, profile } = payload;
+    const routeClues = getRouteClues(payload);
+    const clue = getCurrentClue(payload);
+
     playerGame.classList.remove('hidden');
     pillTeam.textContent = 'Squadra: ' + team.teamName;
     pillProfile.textContent = 'Profilo: ' + profile.label;
+    pillRoute.textContent = 'Percorso: ' + getRouteLabel(payload);
     pillState.textContent = 'Stato: ' + humanState(team, game);
 
     waitBox.classList.add('hidden');
@@ -379,11 +440,16 @@
       return;
     }
 
-    const clue = profile.clues[team.clueIndex];
-    if(!clue) return;
+    if(!clue){
+      errorBox.textContent = routeClues.length
+        ? 'Il percorso assegnato risulta incoerente rispetto all’indice corrente.'
+        : 'Nessuna sequenza di luoghi disponibile per questa squadra. Verifica l’assegnazione del percorso sul server.';
+      errorBox.classList.remove('hidden');
+      return;
+    }
 
     clueBox.classList.remove('hidden');
-    clueNumber.textContent = 'Indizio ' + (team.clueIndex + 1) + ' di ' + profile.clues.length;
+    clueNumber.textContent = 'Indizio ' + (team.clueIndex + 1) + ' di ' + routeClues.length;
     clueTitle.textContent = clue.title;
     clueText.textContent = clue.text;
 
@@ -427,7 +493,7 @@
   }
 
   function updateGeoUI(clue){
-    if(!lastPosition){
+    if(!lastPosition || !clue || typeof clue.lat !== 'number' || typeof clue.lng !== 'number'){
       distanceValue.textContent = '— m';
       arrow.style.transform = 'rotate(0deg)';
       return;
@@ -528,7 +594,7 @@
       compassHeading = smoothAngle(compassHeading, rawHeading, factor);
 
       if(currentTeamPayload?.profile?.mode === 'extraurbano'){
-        const clue = currentTeamPayload.profile.clues[currentTeamPayload.team.clueIndex];
+        const clue = getCurrentClue(currentTeamPayload);
         if(clue) updateGeoUI(clue);
       }
     };
@@ -568,14 +634,16 @@
       }
 
       if(currentTeamPayload && currentTeamPayload.profile && currentTeamPayload.profile.mode === 'extraurbano'){
-        const clue = currentTeamPayload.profile.clues[currentTeamPayload.team.clueIndex];
+        const clue = getCurrentClue(currentTeamPayload);
         if(clue){
           updateGeoUI(clue);
-          const dist = distanceMeters(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng);
-          const now = Date.now();
-          if(dist <= 10 && now - lastGeoCheckAt > 1400){
-            lastGeoCheckAt = now;
-            await geoCheckNow();
+          if(typeof clue.lat === 'number' && typeof clue.lng === 'number'){
+            const dist = distanceMeters(lastPosition.lat, lastPosition.lng, clue.lat, clue.lng);
+            const now = Date.now();
+            if(dist <= 10 && now - lastGeoCheckAt > 1400){
+              lastGeoCheckAt = now;
+              await geoCheckNow();
+            }
           }
         }
       }
@@ -615,6 +683,11 @@
 
     state.teams.forEach(team => {
       const profile = bootstrap?.profiles?.find(p => p.id === team.profileId);
+      const routeLabel = team.routeLabel || team.routeName || team.route?.label || team.route?.name || (profile ? profile.label : '—');
+      const clueCount = getClueCountFromTeamState(team, profile);
+      const progressIndex = Number.isFinite(Number(team.clueIndex)) ? Number(team.clueIndex) : 0;
+      const shownProgress = typeof clueCount === 'number' ? `${Math.min(progressIndex, clueCount)} / ${clueCount}` : `${progressIndex} / ${clueCount}`;
+
       const div = document.createElement('div');
       div.className = 'team-item';
       div.innerHTML = `
@@ -626,9 +699,10 @@
           <div style="flex:1"></div>
           <span class="pill">${humanState(team, state.game)}</span>
         </div>
-        <div class="small muted">Capitano: ${team.captain} · Giocatori: ${team.players.join(', ')}</div>
+        <div class="small muted">Capitano: ${team.captain} · Giocatori: ${safeArray(team.players).join(', ')}</div>
         <div class="small muted">Profilo: ${profile ? profile.label : team.profileId}</div>
-        <div class="small muted">Progressione: ${team.clueIndex} / ${profile ? profile.clueCount : '?'}</div>
+        <div class="small muted">Percorso assegnato: ${routeLabel}</div>
+        <div class="small muted">Progressione: ${shownProgress}</div>
         ${team.completedAt ? `<div class="small">Completata alle: <b>${new Date(team.completedAt).toLocaleTimeString()}</b></div>` : ''}
         ${team.lastError ? `<div class="msg bad">${team.lastError}</div>` : ''}
         <div class="row" style="margin-top:10px;">
