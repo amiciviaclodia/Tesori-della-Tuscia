@@ -222,7 +222,7 @@
           "radius": 10
         },
         {
-          "title": "Dove tutto finisce",
+          "title": "Dove tutto finisce. Manda una foto all'amministratore.",
           "text": "Fine o inizio?.",
           "lat": 42.2197536,
           "lng": 12.1951786,
@@ -239,15 +239,15 @@
 
 
  {
-          "title": "Dove sgorgava l'acqua",
-          "text": "Antiche sorgenti. Manda unma foto all'amministratore",
-          "lat": 42.2189007,
-          "lng": 12.1925524,
+          "title": "Dove sgorgava l'acqua. Manda una foto all'amministratore.",
+          "text": "Antiche sorgenti. Manda una foto all'amministratore",
+          "lat": 42.2191944,
+          "lng": 12.1898363,
           "radius": 10
         },
 
  {
-          "title": "Il gatto e la",
+          "title": "Il gatto e la... Manda una foto all'amministratore.",
           "text": "Arte moderna. Manda una foto all'amministratore.",
           "lat": 42.2177078,
           "lng": 12.1931713,
