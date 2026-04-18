@@ -209,7 +209,7 @@
       "clues": [
         {
           "title": "I panni sporchi una volta non si lavavano in casa",
-          "text": "Segui la freccia e accorcia la distanza.",
+          "text": "Un duro lavoro.",
           "lat": 42.2176152,
           "lng": 12.1966163,
           "radius": 10
@@ -223,7 +223,7 @@
         },
         {
           "title": "Dove tutto finisce",
-          "text": "Obiettivo extraurbano.",
+          "text": "Fine o inizio?.",
           "lat": 42.2197536,
           "lng": 12.1951786,
           "radius": 10
@@ -231,7 +231,7 @@
 
  {
           "title": "Alle spalle di un edificio sacro",
-          "text": "Obiettivo extraurbano.",
+          "text": "Tra sacro e pagano.",
           "lat": 42.2190440,
           "lng": 12.1925524,
           "radius": 10
@@ -240,15 +240,15 @@
 
  {
           "title": "Dove sgorgava l'acqua",
-          "text": "Obiettivo extraurbano.",
+          "text": "Antiche sorgenti. Manda unma foto all'amministratore",
           "lat": 42.2189007,
           "lng": 12.1925524,
           "radius": 10
         },
 
  {
-          "title": "Ilm gatto e la",
-          "text": "Obiettivo extraurbano.",
+          "title": "Il gatto e la",
+          "text": "Arte moderna. Manda una foto all'amministratore.",
           "lat": 42.2177078,
           "lng": 12.1931713,
           "radius": 10
