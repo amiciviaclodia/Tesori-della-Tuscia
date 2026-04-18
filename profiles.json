@@ -208,31 +208,60 @@
       "mode": "extraurbano",
       "clues": [
         {
-          "title": "Uscita dal paese",
+          "title": "I panni sporchi una volta non si lavavano in casa",
           "text": "Segui la freccia e accorcia la distanza.",
-          "lat": 42.2252,
-          "lng": 12.1881,
+          "lat": 42.2176152,
+          "lng": 12.1966163,
           "radius": 10
         },
         {
-          "title": "Presenza naturale",
-          "text": "Raggiungi il secondo fuoco.",
-          "lat": 42.2244,
-          "lng": 12.1892,
+          "title": "Nella partite di calcio si fa gol",
+          "text": "fai una foto di un dettaglio e mandala all'amministratore",
+          "lat": 42.2191614,
+          "lng": 12.1938824,
           "radius": 10
         },
         {
-          "title": "Traccia di paesaggio",
-          "text": "Terzo obiettivo extraurbano.",
-          "lat": 42.2237,
-          "lng": 12.1901,
+          "title": "Dove tutto finisce",
+          "text": "Obiettivo extraurbano.",
+          "lat": 42.2197536,
+          "lng": 12.1951786,
           "radius": 10
         },
+
+ {
+          "title": "Alle spalle di un edificio sacro",
+          "text": "Obiettivo extraurbano.",
+          "lat": 42.2190440,
+          "lng": 12.1925524,
+          "radius": 10
+        },
+
+
+ {
+          "title": "Dove sgorgava l'acqua",
+          "text": "Obiettivo extraurbano.",
+          "lat": 42.2189007,
+          "lng": 12.1925524,
+          "radius": 10
+        },
+
+ {
+          "title": "Ilm gatto e la",
+          "text": "Obiettivo extraurbano.",
+          "lat": 42.2177078,
+          "lng": 12.1931713,
+          "radius": 10
+        },
+
+
+
+
         {
           "title": "Tesoro finale",
           "text": "Ultima soglia.",
-          "lat": 42.223,
-          "lng": 12.1912,
+          "lat": 12.1931713,
+          "lng": 12.1926704,
           "radius": 10
         }
       ]
