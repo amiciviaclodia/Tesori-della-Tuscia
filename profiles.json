@@ -392,34 +392,17 @@
       "country": "Manziana",
       "mode": "extraurbano",
       "clues": [
-        {
-          "title": "Soglia verde",
-          "text": "Raggiungi il primo punto nel paesaggio.",
-          "lat": 42.1353,
-          "lng": 12.1201,
-          "radius": 10
+{
+          "title": "Dove crescono le fragole più belle",
+          "text": "Ancora pochi passi. Quando il valore scenderà sotto i 10 metri, l’indizio sarà completato.",
+          "lat": 42.183778,
+          "lng": 12.132419,
+          "radius": 5
         },
-        {
-          "title": "Traccia di cammino",
-          "text": "Segui la freccia.",
-          "lat": 42.1346,
-          "lng": 12.121,
-          "radius": 10
-        },
-        {
-          "title": "Respiro del territorio",
-          "text": "Riduci la distanza sotto i 10 metri.",
-          "lat": 42.1339,
-          "lng": 12.1221,
-          "radius": 10
-        },
-        {
-          "title": "Tesoro finale",
-          "text": "Ultimo obiettivo extraurbano.",
-          "lat": 42.1331,
-          "lng": 12.123,
-          "radius": 10
-        }
+
+{"title":"Trova un animale del territorio","text":"Scatta la foto di un animale: gatto, cane, cavallo, asino o uccello. Se riconosciuto, il gioco avanzerà automaticamente.","kind":"photo","acceptedAnimals":["gatto","cane","cavallo","asino","uccello"]},
+
+
       ]
     }
   ]
