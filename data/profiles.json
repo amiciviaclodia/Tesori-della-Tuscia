@@ -56,7 +56,7 @@
           "text": "Segui la freccia e avvicinati piano al punto. Quando entrerai nel raggio di 5m metri, il gioco avanzerà da solo.",
           "lat": 42.183158,
           "lng": 12.132165,
-          "radius": 3
+          "radius": 5
         },
         {
           "title": "Dove crescevano le Mazze di Tamburo",
@@ -70,8 +70,11 @@
           "text": "Ancora pochi passi. Quando il valore scenderà sotto i 10 metri, l’indizio sarà completato.",
           "lat": 42.183778,
           "lng": 12.132419,
-          "radius": 3
+          "radius": 5
         },
+
+{"title":"Trova un animale del territorio","text":"Scatta la foto di un animale: gatto, cane, cavallo, asino o uccello. Se riconosciuto, il gioco avanzerà automaticamente.","kind":"photo","acceptedAnimals":["gatto","cane","cavallo","asino","uccello"]},
+
         {
           "title": "Tesoro finale dove tutto, a volte, si muove",
           "text": "Raggiungi il punto conclusivo. Il primo team che lo centra chiude il proprio percorso.",
@@ -135,14 +138,14 @@
           "text": "Non costruiamo muri ma ponti, e non solo.",
           "lat": 42.177929,
           "lng": 12.083311,
-          "radius": 5
+          "radius": 10
         },
         {
           "title": "Secondo punto",
           "text": "Lassù qualcuno ci ama, e prega per noi.",
           "lat": 42.179424,
           "lng": 12.081401,
-          "radius": 15
+          "radius": 10
         },
         {
           "title": "Terza tappa",
@@ -156,7 +159,7 @@
           "text": "Un uovo speciale, siamo vicini",
           "lat": 42.179960,
           "lng": 12.078486,
-          "radius": 15
+          "radius": 10
         }
       ]
     },
@@ -208,31 +211,60 @@
       "mode": "extraurbano",
       "clues": [
         {
-          "title": "Uscita dal paese",
-          "text": "Segui la freccia e accorcia la distanza.",
-          "lat": 42.2252,
-          "lng": 12.1881,
+          "title": "I panni sporchi una volta non si lavavano in casa",
+          "text": "Un duro lavoro.",
+          "lat": 42.2176152,
+          "lng": 12.1966163,
           "radius": 10
         },
         {
-          "title": "Presenza naturale",
-          "text": "Raggiungi il secondo fuoco.",
-          "lat": 42.2244,
-          "lng": 12.1892,
+          "title": "Nella partite di calcio si fa gol",
+          "text": "fai una foto di un dettaglio e mandala all'amministratore",
+          "lat": 42.2191614,
+          "lng": 12.1938824,
           "radius": 10
         },
         {
-          "title": "Traccia di paesaggio",
-          "text": "Terzo obiettivo extraurbano.",
-          "lat": 42.2237,
-          "lng": 12.1901,
+          "title": "Dove tutto finisce. Manda una foto all'amministratore.",
+          "text": "Fine o inizio?.",
+          "lat": 42.2197536,
+          "lng": 12.1951786,
           "radius": 10
         },
+
+ {
+          "title": "Alle spalle di un edificio sacro",
+          "text": "Tra sacro e pagano.",
+          "lat": 42.2190440,
+          "lng": 12.1925524,
+          "radius": 10
+        },
+
+
+ {
+          "title": "Dove sgorgava l'acqua. Manda una foto all'amministratore.",
+          "text": "Antiche sorgenti. Manda una foto all'amministratore",
+          "lat": 42.2191944,
+          "lng": 12.1898363,
+          "radius": 10
+        },
+
+ {
+          "title": "Il gatto e la... Manda una foto all'amministratore.",
+          "text": "Arte moderna. Manda una foto all'amministratore.",
+          "lat": 42.2177078,
+          "lng": 12.1931713,
+          "radius": 10
+        },
+
+
+
+
         {
           "title": "Tesoro finale",
           "text": "Ultima soglia.",
-          "lat": 42.223,
-          "lng": 12.1912,
+          "lat": 42.2182524,
+          "lng": 12.1927348,
           "radius": 10
         }
       ]
@@ -360,34 +392,17 @@
       "country": "Manziana",
       "mode": "extraurbano",
       "clues": [
-        {
-          "title": "Soglia verde",
-          "text": "Raggiungi il primo punto nel paesaggio.",
-          "lat": 42.1353,
-          "lng": 12.1201,
-          "radius": 10
+{
+          "title": "Dove crescono le fragole più belle",
+          "text": "Ancora pochi passi. Quando il valore scenderà sotto i 10 metri, l’indizio sarà completato.",
+          "lat": 42.183778,
+          "lng": 12.132419,
+          "radius": 5
         },
-        {
-          "title": "Traccia di cammino",
-          "text": "Segui la freccia.",
-          "lat": 42.1346,
-          "lng": 12.121,
-          "radius": 10
-        },
-        {
-          "title": "Respiro del territorio",
-          "text": "Riduci la distanza sotto i 10 metri.",
-          "lat": 42.1339,
-          "lng": 12.1221,
-          "radius": 10
-        },
-        {
-          "title": "Tesoro finale",
-          "text": "Ultimo obiettivo extraurbano.",
-          "lat": 42.1331,
-          "lng": 12.123,
-          "radius": 10
-        }
+
+{"title":"Trova un animale del territorio","text":"Scatta la foto di un animale: gatto, cane, cavallo, asino o uccello. Se riconosciuto, il gioco avanzerà automaticamente.","kind":"photo","acceptedAnimals":["gatto","cane","cavallo","asino","uccello"]},
+
+
       ]
     }
   ]
