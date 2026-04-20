@@ -55,13 +55,6 @@
     .team-list{display:grid;gap:10px}
     .team-item{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}
     .section-title{margin:.15rem 0 .7rem;font-size:1.2rem}
-
-    .photoBoxInner{margin-top:12px;padding:14px}
-    .photoPreviewWrap{margin-top:12px;border:1px solid var(--line);border-radius:16px;background:#fff;padding:10px}
-    .photoPreview{display:none;max-width:100%;width:100%;border-radius:12px}
-    .photoMeta{display:grid;gap:6px;margin-top:10px}
-    .photoBadge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:.92rem}
-
   </style>
 </head>
 <body>
@@ -171,28 +164,6 @@
           </div>
         </div>
 
-        <div id="photoBox" class="card hidden photoBoxInner">
-          <div class="small muted">Scatta o seleziona una foto. Il riconoscimento dell’animale avviene localmente nel browser, senza cloud a pagamento. Se l’animale richiesto viene riconosciuto con sufficiente affidabilità, la squadra passa automaticamente allo step successivo.</div>
-          <div class="field" style="margin-top:10px;">
-            <label>Animale richiesto</label>
-            <div id="photoTargetLabel" class="photoBadge">—</div>
-          </div>
-          <div class="field">
-            <label>Scatta o carica una foto</label>
-            <input id="photoInput" type="file" accept="image/*" capture="environment" />
-          </div>
-          <div class="row">
-            <button id="photoVerifyBtn">Riconosci animale</button>
-          </div>
-          <div class="photoPreviewWrap">
-            <img id="photoPreview" class="photoPreview" alt="Anteprima foto selezionata" />
-            <div class="photoMeta">
-              <div class="small muted">Esito riconoscimento</div>
-              <div id="photoResultBox" class="msg warn">Nessuna analisi ancora eseguita.</div>
-            </div>
-          </div>
-        </div>
-
         <div id="completeBox" class="msg ok hidden">Percorso completato. Attendi la chiusura o il verdetto finale.</div>
       </div>
     </section>
@@ -238,10 +209,6 @@
   let lastPosition = null;
   let compassStarted = false;
   let lastGeoCheckAt = 0;
-  let photoDetector = null;
-  let photoClassifier = null;
-  let photoVision = null;
-  let photoLibrariesLoading = null;
 
   const statusCard = document.getElementById('statusCard');
   const playerView = document.getElementById('playerView');
@@ -272,11 +239,6 @@
   const arrow = document.getElementById('arrow');
   const distanceValue = document.getElementById('distanceValue');
   const geoTargetLabel = document.getElementById('geoTargetLabel');
-  const photoBox = document.getElementById('photoBox');
-  const photoTargetLabel = document.getElementById('photoTargetLabel');
-  const photoInput = document.getElementById('photoInput');
-  const photoPreview = document.getElementById('photoPreview');
-  const photoResultBox = document.getElementById('photoResultBox');
   const completeBox = document.getElementById('completeBox');
   const whatsappBtn = document.getElementById('whatsappBtn');
 
@@ -367,286 +329,6 @@
     return clues[clueIndex] || null;
   }
 
-  function getClueKind(clue, profile){
-    const explicit = clue?.kind || clue?.type || clue?.mode || clue?.verifyType || clue?.verificationType;
-    if(typeof explicit === 'string'){
-      const normalized = explicit.trim().toLowerCase();
-      if(['photo','foto','animal','animale','image','immagine'].includes(normalized)) return 'photo';
-      if(['geo','gps','map','extraurbano'].includes(normalized)) return 'geo';
-      if(['code','codice','keyword','urbano'].includes(normalized)) return 'code';
-    }
-    if(profile?.mode === 'urbano') return 'code';
-    if(profile?.mode === 'extraurbano') return 'geo';
-    return 'code';
-  }
-
-  function normalizeAnimalName(value){
-    const v = String(value || '').trim().toLowerCase();
-    const table = {
-      gatto:'cat',
-      cat:'cat',
-      cane:'dog',
-      dog:'dog',
-      cavallo:'horse',
-      horse:'horse',
-      asino:'donkey',
-      donkey:'donkey',
-      ciuco:'donkey',
-      somaro:'donkey',
-      mulo:'donkey',
-      mule:'donkey',
-      uccello:'bird',
-      uccelli:'bird',
-      volatile:'bird',
-      volatili:'bird',
-      bird:'bird',
-      birds:'bird'
-    };
-    return table[v] || v;
-  }
-
-  function getPhotoTargetAnimal(clue){
-    const candidates = [
-      clue?.targetAnimal,
-      clue?.animal,
-      clue?.target,
-      clue?.expectedAnimal,
-      clue?.photoTarget,
-      clue?.label,
-      clue?.targetClass
-    ];
-
-    for(const candidate of candidates){
-      const normalized = normalizeAnimalName(candidate);
-      if(['cat','dog','horse','donkey','bird'].includes(normalized)) return normalized;
-    }
-
-    const haystack = `${clue?.title || ''} ${clue?.text || ''}`.toLowerCase();
-    if(/\bgatt/i.test(haystack) || /\bcat\b/i.test(haystack)) return 'cat';
-    if(/\bcane\b/i.test(haystack) || /\bdog\b/i.test(haystack)) return 'dog';
-    if(/\bcavall/i.test(haystack) || /\bhorse\b/i.test(haystack)) return 'horse';
-    if(/\basin/i.test(haystack) || /\bciuco\b/i.test(haystack) || /\bsomaro\b/i.test(haystack) || /\bdonkey\b/i.test(haystack) || /\bmule\b/i.test(haystack)) return 'donkey';
-    if(/\buccell/i.test(haystack) || /\bvolatile\b/i.test(haystack) || /\bbird\b/i.test(haystack)) return 'bird';
-
-    return null;
-  }
-
-  function getPhotoThreshold(clue){
-    const raw = Number(clue?.minScore ?? clue?.scoreThreshold ?? clue?.threshold ?? 0.62);
-    if(Number.isNaN(raw)) return 0.62;
-    return Math.min(Math.max(raw, 0.2), 0.95);
-  }
-
-  function getAnimalDisplayName(animal){
-    const map = {
-      cat: 'Gatto',
-      dog: 'Cane',
-      horse: 'Cavallo',
-      donkey: 'Asino',
-      bird: 'Uccello'
-    };
-    return map[animal] || animal || 'Animale';
-  }
-
-  function getAnimalAliases(animal){
-    const map = {
-      cat: ['cat','kitten','tabby cat','tiger cat','egyptian cat'],
-      dog: ['dog','puppy','hound','beagle','retriever','shepherd dog','labrador retriever','golden retriever','terrier','spaniel','collie','husky','dalmatian','poodle'],
-      horse: ['horse','stallion','mare','pony'],
-      donkey: ['donkey','mule','ass'],
-      bird: ['bird','sparrow','eagle','owl','duck','goose','hen','rooster','cock','parrot','pigeon','dove','hawk','falcon','seagull','kingfisher','woodpecker','passer domesticus']
-    };
-    return map[animal] || [animal];
-  }
-
-  function clueSupportsPhoto(clue){
-    return getClueKind(clue, currentTeamPayload?.profile) === 'photo' && !!getPhotoTargetAnimal(clue);
-  }
-
-  function setPhotoResult(message, tone = 'warn'){
-    photoResultBox.className = 'msg ' + tone;
-    photoResultBox.textContent = message;
-  }
-
-  function clearPhotoUI(){
-    photoInput.value = '';
-    photoPreview.removeAttribute('src');
-    photoPreview.style.display = 'none';
-    setPhotoResult('Nessuna analisi ancora eseguita.', 'warn');
-  }
-
-  async function ensurePhotoVisionTasks(){
-    if(photoVision) return photoVision;
-    if(photoLibrariesLoading) return photoLibrariesLoading;
-
-    photoLibrariesLoading = (async () => {
-      const visionModule = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.mjs');
-      const { FilesetResolver, ObjectDetector, ImageClassifier } = visionModule;
-      const vision = await FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm');
-
-      photoDetector = await ObjectDetector.createFromOptions(vision, {
-        baseOptions: {
-          modelAssetPath: 'https://storage.googleapis.com/mediapipe-tasks/object_detector/efficientdet_lite0_uint8.tflite'
-        },
-        runningMode: 'IMAGE',
-        scoreThreshold: 0.35,
-        maxResults: 8
-      });
-
-      photoClassifier = await ImageClassifier.createFromOptions(vision, {
-        baseOptions: {
-          modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/image_classifier/efficientnet_lite0/float32/1/efficientnet_lite0.tflite'
-        },
-        runningMode: 'IMAGE',
-        maxResults: 8,
-        scoreThreshold: 0.15
-      });
-
-      photoVision = { FilesetResolver, ObjectDetector, ImageClassifier, vision };
-      return photoVision;
-    })();
-
-    return photoLibrariesLoading;
-  }
-
-  async function fileToImage(file){
-    const blobUrl = URL.createObjectURL(file);
-    try{
-      const img = new Image();
-      img.src = blobUrl;
-      await img.decode();
-      return img;
-    } finally {
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 15000);
-    }
-  }
-
-  function collectPhotoCandidates(detectorResult, classifierResult){
-    const entries = [];
-
-    const pushEntry = (name, score, source) => {
-      if(!name) return;
-      entries.push({
-        name: String(name).toLowerCase(),
-        score: Number(score || 0),
-        source
-      });
-    };
-
-    for(const detection of detectorResult?.detections || []){
-      for(const category of detection.categories || []){
-        pushEntry(category.categoryName || category.displayName, category.score, 'detector');
-      }
-    }
-
-    for(const classification of classifierResult?.classifications || []){
-      for(const category of classification.categories || []){
-        pushEntry(category.displayName || category.categoryName, category.score, 'classifier');
-      }
-    }
-
-    return entries.sort((a,b) => b.score - a.score);
-  }
-
-  function findBestAnimalMatch(targetAnimal, candidates){
-    const aliases = getAnimalAliases(targetAnimal).map(v => v.toLowerCase());
-
-    let best = null;
-
-    for(const item of candidates){
-      const name = item.name.toLowerCase();
-
-      const exact = aliases.includes(name);
-      const partial = aliases.some(alias => name.includes(alias) || alias.includes(name));
-
-      if(exact || partial){
-        if(!best || item.score > best.score){
-          best = item;
-        }
-      }
-    }
-
-    if(best) return { matched: true, best };
-
-    if(targetAnimal === 'donkey'){
-      const horseFallback = candidates.find(item => item.name.includes('horse'));
-      if(horseFallback){
-        return {
-          matched: false,
-          best: horseFallback,
-          fallbackHint: 'Il modello ha riconosciuto un cavallo. Per l’asino il riconoscimento resta indicativo.'
-        };
-      }
-    }
-
-    return { matched: false, best: candidates[0] || null };
-  }
-
-  async function analyzeAnimalPhoto(){
-    if(!currentTeamPayload) return;
-    const clue = getCurrentClue(currentTeamPayload);
-    const targetAnimal = getPhotoTargetAnimal(clue);
-
-    if(!clue || getClueKind(clue, currentTeamPayload.profile) !== 'photo'){
-      return alert('In questo momento non c’è un indizio foto attivo.');
-    }
-
-    if(!targetAnimal){
-      return alert('Questo indizio foto non specifica un animale riconoscibile.');
-    }
-
-    const file = photoInput.files?.[0];
-    if(!file){
-      return alert('Scatta o seleziona una foto prima di procedere.');
-    }
-
-    try{
-      setPhotoResult('Analisi in corso sul dispositivo…', 'warn');
-      await ensurePhotoVisionTasks();
-
-      const img = await fileToImage(file);
-      photoPreview.src = img.src;
-      photoPreview.style.display = 'block';
-
-      const detectorResult = photoDetector.detect(img);
-      const classifierResult = photoClassifier.classify(img);
-      const candidates = collectPhotoCandidates(detectorResult, classifierResult);
-      const match = findBestAnimalMatch(targetAnimal, candidates);
-      const threshold = getPhotoThreshold(clue);
-
-      if(match.matched && match.best && match.best.score >= threshold){
-        setPhotoResult(`Riconoscimento riuscito: ${getAnimalDisplayName(targetAnimal)} rilevato con affidabilità ${(match.best.score * 100).toFixed(0)}%.`, 'ok');
-
-        try{
-          await api(`/api/teams/${encodeURIComponent(currentTeamPayload.team.id)}/photo-check`, {
-            method:'POST',
-            body: JSON.stringify({
-              targetAnimal,
-              detectedLabel: match.best.name,
-              detectedScore: match.best.score,
-              source: match.best.source
-            })
-          });
-          await loadCurrentTeam();
-        }catch(err){
-          setPhotoResult(`Animale riconosciuto, ma il server non ha confermato il passaggio automatico: ${err.message}`, 'bad');
-        }
-        return;
-      }
-
-      const bestLabel = match.best ? `${match.best.name} (${(match.best.score * 100).toFixed(0)}%)` : 'nessun risultato utile';
-      const baseMessage = `Animale richiesto non riconosciuto con affidabilità sufficiente. Miglior risultato: ${bestLabel}.`;
-
-      if(match.fallbackHint){
-        setPhotoResult(baseMessage + ' ' + match.fallbackHint, 'warn');
-      } else {
-        setPhotoResult(baseMessage, 'warn');
-      }
-    }catch(err){
-      setPhotoResult('Errore nel riconoscimento locale: ' + err.message, 'bad');
-    }
-  }
-
   async function loadBootstrap(){
     bootstrap = await api('/api/bootstrap');
     profileSelect.innerHTML = bootstrap.profiles.map(p => `<option value="${p.id}">${p.label}</option>`).join('');
@@ -730,7 +412,6 @@
     clueBox.classList.add('hidden');
     urbanBox.classList.add('hidden');
     geoBox.classList.add('hidden');
-    photoBox.classList.add('hidden');
     completeBox.classList.add('hidden');
 
     if(team.lastError){
@@ -772,14 +453,8 @@
     clueTitle.textContent = clue.title;
     clueText.textContent = clue.text;
 
-    const clueKind = getClueKind(clue, profile);
-
-    if(clueKind === 'code'){
+    if(profile.mode === 'urbano'){
       urbanBox.classList.remove('hidden');
-    } else if(clueKind === 'photo'){
-      photoBox.classList.remove('hidden');
-      photoTargetLabel.textContent = getAnimalDisplayName(getPhotoTargetAnimal(clue)) || 'Animale';
-      setPhotoResult('Pronto per l’analisi della foto.', 'warn');
     } else {
       geoBox.classList.remove('hidden');
       geoTargetLabel.textContent = clue.title;
@@ -1160,7 +835,6 @@
   document.getElementById('joinTeamBtn').addEventListener('click', joinTeam);
   document.getElementById('verifyCodeBtn').addEventListener('click', verifyCode);
   document.getElementById('refreshTeamBtn').addEventListener('click', loadCurrentTeam);
-  document.getElementById('photoVerifyBtn').addEventListener('click', analyzeAnimalPhoto);
   document.getElementById('geoStartBtn').addEventListener('click', startGeoWatch);
   document.getElementById('geoCheckBtn').addEventListener('click', geoCheckNow);
   document.getElementById('whatsappBtn').addEventListener('click', contactAdminWhatsapp);
@@ -1170,24 +844,6 @@
   document.getElementById('endGameBtn').addEventListener('click', endGame);
   document.getElementById('resetGameBtn').addEventListener('click', resetGame);
   document.getElementById('refreshAdminBtn').addEventListener('click', loadAdminMonitorIfOpen);
-
-  photoInput.addEventListener('change', async () => {
-    const file = photoInput.files?.[0];
-    if(!file){
-      clearPhotoUI();
-      return;
-    }
-
-    try{
-      const img = await fileToImage(file);
-      photoPreview.src = img.src;
-      photoPreview.style.display = 'block';
-      setPhotoResult('Foto caricata. Avvia il riconoscimento.', 'warn');
-    }catch(err){
-      setPhotoResult('Impossibile leggere la foto selezionata: ' + err.message, 'bad');
-    }
-  });
-
 
   setInterval(async () => {
     if(currentTeamId) {
